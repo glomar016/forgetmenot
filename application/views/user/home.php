@@ -1,51 +1,33 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <!-- Required meta tags-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="au theme template">
-    <meta name="author" content="Hau Nguyen">
-    <meta name="keywords" content="au theme template">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Forget Me Not</title>
 
-    <!-- Title Page-->
-    <title>Dashboard</title>
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Tempusdominus Bootstrap 4 -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <!-- iCheck -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- JQVMap -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/jqvmap/jqvmap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/dist/css/adminlte.min.css">
+  <!-- overlayScrollbars -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <!-- Daterange picker -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/daterangepicker/daterangepicker.css">
+  <!-- summernote -->
+  <link rel="stylesheet" href="<?php echo base_url()?>resources/plugins/summernote/summernote-bs4.min.css">
 
-    <!-- Fontfaces CSS-->
-    <link href="<?php echo base_url()?>resources/css/font-face.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
-
-    <!-- Bootstrap CSS-->
-    <link href="<?php echo base_url()?>resources/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
-
-    <!-- Vendor CSS-->
-    <link href="<?php echo base_url()?>resources/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/wow/animate.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/slick/slick.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/select2/select2.min.css" rel="stylesheet" media="all">
-    <link href="<?php echo base_url()?>resources/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="<?php echo base_url()?>resources/css/theme.css" rel="stylesheet" media="all">
-    
-    <!-- Data Tables CSS-->
-    <link href="<?php echo base_url()?>resources/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
-
-    <!-- Fontfaces CSS-->
-    <!-- <link href="<?php echo base_url()?>resources/css/font-awesome.min.css" rel="stylesheet" media="all"> -->
-
-    <!-- Bootstrap CSS-->
-    <link href="<?php echo base_url()?>resources/css/bootstrap.min.css" rel="stylesheet" media="all">
-
-    <!-- Main CSS-->
-    <link href="<?php echo base_url()?>resources/css/main.css" rel="stylesheet" media="all">
+  <!-- Data Tables CSS -->
+  <link href="<?php echo base_url()?>resources/css/jquery.dataTables.min.css" rel="stylesheet" media="all">
 
     <!-- Jquery-->
     <script src="<?php echo base_url()?>resources/js/jquery-3.5.1.min.js"></script>
@@ -53,83 +35,71 @@
     <!-- Data Tables JS-->
     <script src="<?php echo base_url()?>resources/js/jquery.dataTables.min.js"></script>
 
-    <!-- Date Time JS-->
-    <!-- <script src="<?php echo base_url()?>resources/js/datetime.js"></script> -->
-
     <!-- Moment w locales JS-->
     <script src="<?php echo base_url()?>resources/js/moment.js"></script>
 
     <!-- Sweet Alert -->
     <script src="<?php echo base_url()?>resources/js/sweetalert2@10.js"></script>
 
-
 </head>
-<body class="animsition">
-    <div class="page-wrapper">
-        <!-- HEADER MOBILE-->
-        <?php $this->load->view('includes/header_mobile.php'); ?>
-        <!-- END HEADER MOBILE-->
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
 
-        <!-- MENU SIDEBAR-->
-        <!-- <?php $this->load->view('includes/adminsidebar.php'); ?> -->
-        <!-- END MENU SIDEBAR-->
+  <!-- Preloader -->
+  <div class="preloader">
+    <img src="<?php echo base_url()?>resources/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+  </div>
 
-        <!-- PAGE CONTAINER-->
-        <div class="page-container">
-            <!-- HEADER DESKTOP-->
-            <?php $this->load->view('includes/header_desktop.php'); ?>
-            <!-- HEADER DESKTOP-->
-        <!-- MAIN CONTENT-->
-        <div class='main-content'>
-            <div class="section__content section__content--p30">
-                <div class="container-fluid">
-                    <div class="row d-flex justify-content-center">
-                        <div class="col-lg-10">
-                            <!-- Data Table Content -->
-                            <div class="au-card m-b-30">
-                                <div class="au-card-inner">
+    <!-- NAVBAR -->
+    <!-- <?php $this->load->view('includes/navbar.php'); ?> -->
+    <!-- END NAVBAR-->
 
-                                    <!-- DATA TABLE -->
-                                    
-                                    <div class="table-data__tool">
-                                            <h4>Task List</h4>
-                                        <div class="table-data__tool-right">
-                                            <button  type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addTaskModal">   
-                                            <i style=padding:3px; class="fa fa-plus"></i> 
-                                            Add Task </button>
-                                        </div>
-                                    </div>
-                                    <div class="table-responsive table-responsive-data2">
-                                        <table id="taskTable" class="table table-data3" style="width:100%"> 
-                                            <thead class="thead-light">
-                                                <tr>
-                                                    <th>Id</th>
-                                                    <th>Title</th>
-                                                    <th>Due Date</th>
-                                                    <th>Category</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+    <!-- MENU SIDEBAR-->
+    <!-- <?php $this->load->view('includes/sidebar.php'); ?> -->
+    <!-- END MENU SIDEBAR-->
+  
 
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <!-- END DATA TABLE -->
-                                    </div>  
-                                </div>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                            <!-- DATA TABLE -->
+                            <div class="card-header">
+                                <h3 class="card-title">Task List</h3>
+                                <button  type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addTaskModal">   
+                                    <i style=padding:3px; class="fa fa-plus"></i> 
+                                    Add Task </button>
                             </div>
-                            <!-- End of Data Table Content -->
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="taskTable" class="table table-bordered table-hover" style="width:100%">
+                                    <thead>
+                                        <tr>
+                                            <th>Id</th>
+                                            <th>Title</th>
+                                            <th>Due Date</th>
+                                            <th>Category</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <!-- END DATA TABLE -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div> 
-
-            <!-- END MAIN CONTENT-->
-        <!-- END PAGE CONTAINER-->
         </div>
-    </div>
+    </section>
+    <!-- /.content -->
+  </div>
+              
      
     <!-- Add Task MODAL -->
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
@@ -265,32 +235,55 @@
                 </div>
             </div>
         </div>
-    <!-- END EDIT task MODAL -->
+        
+                    
+  
 
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
 
-    <script src="<?php echo base_url()?>resources/vendor/bootstrap-4.1/popper.min.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/bootstrap-4.1/bootstrap.min.js"></script>
-    <!-- Vendor JS       -->
-    <script src="<?php echo base_url()?>resources/vendor/slick/slick.min.js">
-    </script>
-    <script src="<?php echo base_url()?>resources/vendor/wow/wow.min.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/animsition/animsition.min.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
-    <script src="<?php echo base_url()?>resources/vendor/counter-up/jquery.waypoints.min.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/counter-up/jquery.counterup.min.js">
-    </script>
-    <script src="<?php echo base_url()?>resources/vendor/circle-progress/circle-progress.min.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/chartjs/Chart.bundle.min.js"></script>
-    <script src="<?php echo base_url()?>resources/vendor/select2/select2.min.js">
-    </script>
+<!-- jQuery -->
+<!-- <script src="<?php echo base_url()?>resources/plugins/jquery/jquery.min.js"></script> -->
+<!-- jQuery UI 1.11.4 -->
+<script src="<?php echo base_url()?>resources/plugins/jquery-ui/jquery-ui.min.js"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+  $.widget.bridge('uibutton', $.ui.button)
+</script>
+<!-- Bootstrap 4 -->
+<script src="<?php echo base_url()?>resources/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- ChartJS -->
+<script src="<?php echo base_url()?>resources/plugins/chart.js/Chart.min.js"></script>
+<!-- Sparkline -->
+<script src="<?php echo base_url()?>resources/plugins/sparklines/sparkline.js"></script>
 
-    <!-- Main JS-->
-    <script src="<?php echo base_url()?>resources/js/main.js"></script>
-
+<!-- JQVMap -->
+<script src="<?php echo base_url()?>resources/plugins/jqvmap/jquery.vmap.min.js"></script>
+<script src="<?php echo base_url()?>resources/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+<!-- jQuery Knob Chart -->
+<script src="<?php echo base_url()?>resources/plugins/jquery-knob/jquery.knob.min.js"></script>
+<!-- daterangepicker -->
+<script src="<?php echo base_url()?>resources/plugins/moment/moment.min.js"></script>
+<script src="<?php echo base_url()?>resources/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Tempusdominus Bootstrap 4 -->
+<script src="<?php echo base_url()?>resources/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+<!-- Summernote -->
+<script src="<?php echo base_url()?>resources/plugins/summernote/summernote-bs4.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="<?php echo base_url()?>resources/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="<?php echo base_url()?>resources/dist/js/adminlte.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="<?php echo base_url()?>resources/dist/js/demo.js"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script src="<?php echo base_url()?>resources/dist/js/pages/dashboard.js"></script>
 </body>
-    
+
 <script>
     // start of script
 $(document).ready(function(){
@@ -498,6 +491,4 @@ $(document).ready(function(){
 });
 // end of script
 </script>
-
 </html>
-<!-- end document-->
