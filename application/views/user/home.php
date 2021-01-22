@@ -70,9 +70,11 @@
                     <div class="col-12">
                         <div class="card">
                             <!-- DATA TABLE -->
-                            <div class="card">
                                 <div class="card-header">
-                                        <h3 class="card-title">Task List</h3>
+                                        <h2 class="card-title">Task List</h2>
+                                        <button  type="button" class="btn btn-sm btn-info float-right" data-toggle="modal" data-target="#addTaskModal">   
+                                        <i style=padding:3px; class="fa fa-plus"></i> 
+                                        Add Task </button>
                                 </div>
                                 <div class="card-body p-8">
                                     <table id="taskTable" class="table table-sm" style="width:100%">
