@@ -61,46 +61,109 @@
 
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+    <div class="content-wrapper">
 
-    <!-- Main content -->
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
                             <!-- DATA TABLE -->
-                            <div class="card-header">
-                                <h3 class="card-title">Task List</h3>
-                                <button  type="button" class="btn btn-info float-right" data-toggle="modal" data-target="#addTaskModal">   
-                                    <i style=padding:3px; class="fa fa-plus"></i> 
-                                    Add Task </button>
-                            </div>
-                            <!-- /.card-header -->
-                            <div class="card-body">
-                                <table id="taskTable" class="table table-bordered table-hover" style="width:100%">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>Title</th>
-                                            <th>Due Date</th>
-                                            <th>Category</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                </table>
+                            <div class="card">
+                                <div class="card-header">
+                                        <h3 class="card-title">Task List</h3>
+                                </div>
+                                <div class="card-body p-8">
+                                    <table id="taskTable" class="table table-sm" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Title</th>
+                                                <th>Due Date</th>
+                                                <th>Category</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
                             </div>
                             <!-- END DATA TABLE -->
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- /.content -->
-  </div>
+        </section>
+        <!-- /.content -->
+    </div>
               
      
+    <!-- view Task MODAL -->
+    <div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style=background-color:#46d4e0;>
+                                <h4 class="modal-title" id="largeModalLabel" style=color:white;><strong>View Task</strong></h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                    </div>
+                    <div class="card">   
+                        <div class="card-body card-block">
+                            <form action="" method="post" name="viewTaskForm" id="viewTaskForm">
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                        <i style =padding-right:16px; class="fa fa-trophy"></i>
+                                            <label for="viewtaskTitle" class=" form-control-label">Title</label>
+                                        </div>
+                                        <div class="col-4 col-md-8">
+                                            <input type="text" id="viewtaskTitle" name="viewtaskTitle" placeholder="Title" maxlength="50" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                        <i style =padding-right:16px; class="fa fa-users"></i>
+                                            <label for="viewtaskCategory" class="form-control-label">Category</label>
+                                        </div>
+                                        <div class="col-4 col-md-8">
+                                            <select name="viewtaskCategory" id="viewtaskCategory" class="form-control">
+                                                <option value="Education" selected>Education</option>
+                                                <option value="Personal">Personal</option>
+                                                <option value="Work">Work</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                        <i style =padding-right:16px; class="fa fa-comment"></i>
+                                            <label for="viewtaskDescription" class=" form-control-label">Description</label>
+                                        </div>
+                                        <div class="col-4 col-md-8">
+                                            <textarea name="viewtaskDescription" id="viewtaskDescription" rows="12" placeholder="Description" class="form-control" maxlength="2000"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col col-md-3">
+                                        <i style =padding-right:16px; class="fa fa-calendar"></i>
+                                            <label for="viewtaskDueDate" class=" form-control-label">Due Date</label>
+                                        </div>
+                                        <?php date_default_timezone_set('Asia/Manila');
+                                        ?>
+                                        <div class="col-4 col-md-8">
+                                            <input type="datetime-local" 
+                                            value=""
+                                            id="viewtaskDueDate" name="viewtaskDueDate" class="form-control">
+                                        </div>
+                                    </div>
+                                    
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <!-- END of view task MODAL -->
+
     <!-- Add Task MODAL -->
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
@@ -125,7 +188,7 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="col col-md-3">
-                                        <i style =padding-right:16px; class="fa fa-group"></i>
+                                        <i style =padding-right:16px; class="fa fa-users"></i>
                                             <label for="taskCategory" class=" form-control-label">Category</label>
                                         </div>
                                         <div class="col-4 col-md-8">
@@ -194,7 +257,7 @@
                                     </div>
                                     <div class="row form-group">
                                         <div class="col col-md-3">
-                                        <i style =padding-right:16px; class="fa fa-group"></i>
+                                        <i style =padding-right:16px; class="fa fa-users"></i>
                                             <label for="edittaskCategory" class=" form-control-label">Category</label>
                                         </div>
                                         <div class="col-4 col-md-8">
@@ -221,7 +284,7 @@
                                         </div>
                                         <div class="col-4 col-md-8">
                                             <input type="datetime-local" 
-                                            value="<?php echo date('Y-m-d', strtotime('+1 day', strtotime(date('Y-m-d'))))?>" 
+                                            value="" 
                                             
                                             id="edittaskDueDate" name="edittaskDueDate" class="form-control">
                                         </div>
@@ -296,7 +359,8 @@ $(document).ready(function(){
                 { data: "id"},
                 { data: "taskTitle"},
                 { data: "taskDueDate", render: function(data, type, row){
-                    if(moment(data).format('MM DD YYYY, h:mm:ss') <= moment().subtract(1, 'days').format('MM DD YYYY, h:mm:ss')){
+                    if(moment(data).format('MM DD YYYY, h:mm:ss') <= moment().format('MM DD YYYY, h:mm:ss') &&
+                    moment(data).format('MM DD YYYY, h:mm:ss') >= moment().subtract(1, 'days').format('MM DD YYYY, h:mm:ss')){
                         return moment(data).format('LLL')+' - '+'<span class="badge badge-warning">Due Soon</span>';
                     }
                     else if((moment(data).format('MM DD YYYY, h:mm:ss')) <= (moment().format('MM DD YYYY, h:mm:ss'))){
@@ -305,14 +369,14 @@ $(document).ready(function(){
                     else{
                         return moment(data).format('LLL');
                     }
-                }, "orderData":[1]},
+                }, "orderData":[2]},
                 { data: "taskCategory"},
                 { data: "taskStatus", render: function(data, type, row){
                     if(data == 1){
                         return '<div class="btn-group">'+
-                                '<button class="btn btn-primary btn-sm btn_view" value="'+row.id+'" title="View" type="button" alt="View"><i class="zmdi zmdi-eye"></i> </button>'+
-                                '<button class="btn btn-warning btn-sm btn_update" value="'+row.id+'" title="Edit" type="button" alt="View"><i class="zmdi zmdi-edit"></i> </button>'+
-                                '<button class="btn btn-danger btn-sm btn_delete" value="'+row.id+'" title="Delete" type="button" alt="Delete"> <i class="zmdi zmdi-delete"> </i></button></div>';
+                                // '<button class="btn btn-primary btn-sm btn_view" value="'+row.id+'" title="View" type="button" alt="View"><i class="fa fa-eye"></i> </button>'+
+                                '<button class="btn btn-warning btn-sm btn_update" value="'+row.id+'" title="Edit" type="button" alt="View"><i class="fa fa-edit"></i> </button>'+
+                                '<button class="btn btn-danger btn-sm btn_delete" value="'+row.id+'" title="Delete" type="button" alt="Delete"> <i class="fa fa-trash"> </i></button></div>';
                     }   
                     else{
                         return '<button>Activate</button>';
@@ -321,7 +385,7 @@ $(document).ready(function(){
             ],
 
             "aoColumnDefs": [{"bVisible": false, "aTargets": [0]}],
-            "order": [[0, "desc"]]
+            "order": [[2, "asc"]]
         })
     }
 
@@ -358,6 +422,7 @@ $(document).ready(function(){
                                             }).then((result) => {
                                                 $("#btnAddTask").attr("disabled", false);
                                             })
+                                            $("#btnAddTask").attr("disabled", false);
                 }
                 else{
                     // ajax call
@@ -375,19 +440,18 @@ $(document).ready(function(){
                                     $('#addTaskModal form')[0].reset();
                                     refresh()
                                     }
-
-                                    
+     
                         });
+                        $("#btnAddTask").attr("disabled", false);
                         // end of ajax call
                 }       
     });
     // END OF // Create task
 
-    // VIEW TASK 
+    // PASS TASK 
     $(document).on("click", ".btn_update", function(){
         var id = this.value;
         
-
         $.ajax({
             url: '<?php echo base_url()?>user/home/get_task/'+id,
             type: "GET",
@@ -396,13 +460,36 @@ $(document).ready(function(){
                 success:function(data){
                     var parsedResponse = jQuery.parseJSON(JSON.stringify(data));
                     var row = parsedResponse[0];
-                    console.log(row.taskDueDate)
                     $('[name="id"').val(row.id);
                     $('[name="edittaskTitle"]').val(row.taskTitle);
                     $('[name="edittaskCategory"]').val(row.taskCategory);
                     $('[name="edittaskDescription"]').val(row.taskDescription);
-                    $('[name="edittaskDueDate"]')[0].valueAsNumber = (new Date(row.taskDueDate.slice(0, 10)).getTime(row.taskDueDate))
+                    $('[name="edittaskDueDate"]').val(row.taskDueDate);
                     $('#editTaskModal').modal('show'); // show bootstrap modal when complete loaded
+                }
+        })
+       
+    });
+    // END OF PASS TASK
+
+    // VIEW TASK 
+    $(document).on("click", ".btn_view", function(){
+        var id = this.value;
+        
+        $.ajax({
+            url: '<?php echo base_url()?>user/home/get_task/'+id,
+            type: "GET",
+            dataType: "JSON",
+
+                success:function(data){
+                    var parsedResponse = jQuery.parseJSON(JSON.stringify(data));
+                    var row = parsedResponse[0];
+                    $('[name="id"').val(row.id);
+                    $('[name="viewtaskTitle"]').val(row.taskTitle);
+                    $('[name="viewtaskCategory"]').val(row.taskCategory);
+                    $('[name="viewtaskDescription"]').val(row.taskDescription);
+                    $('[name="viewtaskDueDate"]').val(row.taskDueDate);
+                    $('#viewTaskModal').modal('show'); // show bootstrap modal when complete loaded
                 }
         })
        
@@ -449,7 +536,11 @@ $(document).ready(function(){
                             });
                         // End of ajax call
                             }
+                            else{
+                                $("#btnUpdateTask").attr("disabled", false);
+                            }
                         })
+                        
                 });
 
     // END OF // Update contest

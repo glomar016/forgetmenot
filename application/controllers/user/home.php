@@ -64,8 +64,23 @@ class Home extends CI_Controller {
 	public function get_task($id)
 	{
 		$this->load->model('database_model');
+		$timeFormat = 'Y-m-d\TH:i';  
 
-		$data = $this->database_model->get($id, 't_task');
+		$result = $this->database_model->get($id, 't_task');
+		// print_r($result);
+
+		$taskDueDate = new DateTime($result[0]->taskDueDate);
+	
+		$data[0] = array(
+			"id" => $result[0]->id,
+			"taskTitle" => $result[0]->taskTitle, 
+			"taskCategory" => $result[0]->taskCategory,
+			"taskDescription" => $result[0]->taskDescription, 
+			"taskDueDate" => $taskDueDate->format($timeFormat)
+		);
+
+		// print_r($data);
+		
 
 		echo json_encode($data);
 	}
