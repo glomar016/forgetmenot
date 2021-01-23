@@ -2,8 +2,8 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="background-color:#46d4e0;">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
-      <img src="<?php echo base_url()?>resources/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <img src="<?php echo base_url()?>resources/dist/img/FMN.png" alt="Forget Me Not Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+      <span class="brand-text font-weight-light">Forget Me Not</span>
     </a>
 
     <!-- Sidebar -->

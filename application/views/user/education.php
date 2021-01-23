@@ -42,7 +42,7 @@
     <script src="<?php echo base_url()?>resources/js/sweetalert2@10.js"></script>
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini sidebar-collapse">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -72,7 +72,7 @@
                             <!-- DATA TABLE -->
                                 <div class="card-header">
                                         <h2 class="card-title">Task List</h2>
-                                        <button  type="button" class="btn btn-sm btn-info float-right" data-toggle="modal" data-target="#addTaskModal">   
+                                        <button  type="button" class="btn btn-sm btn-success float-right" data-toggle="modal" data-target="#addTaskModal">   
                                         <i style=padding:3px; class="fa fa-plus"></i> 
                                         Add Task </button>
                                 </div>

@@ -9,7 +9,13 @@
         <a href="<?php echo base_url()?>user/home" style="color:black" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url()?>user/settings" style="color:black" class="nav-link">Settings</a>
+        <a href="<?php echo base_url()?>user/education" style="color:black" class="nav-link">Education</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="<?php echo base_url()?>user/personal" style="color:black" class="nav-link">Personal</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="<?php echo base_url()?>user/work" style="color:black" class="nav-link">Work</a>
       </li>
     </ul>
 
