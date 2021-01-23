@@ -118,4 +118,24 @@ class Home extends CI_Controller {
 
 	}
 
+	public function complete_task()
+	{
+		$this->load->model('database_model');
+
+		$id = $this->input->get('id');
+
+		$this->database_model->complete_task($id, "taskStatus", "t_task");
+
+	}
+
+	public function uncomplete_task()
+	{
+		$this->load->model('database_model');
+
+		$id = $this->input->get('id');
+
+		$this->database_model->uncomplete_task($id, "taskStatus", "t_task");
+
+	}
+
 }

@@ -46,9 +46,9 @@
 <div class="wrapper">
 
   <!-- Preloader -->
-  <div class="preloader">
+  <!-- <div class="preloader">
     <img src="<?php echo base_url()?>resources/dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div>
+  </div> -->
 
     <!-- NAVBAR -->
     <!-- <?php $this->load->view('includes/navbar.php'); ?> -->
@@ -81,6 +81,7 @@
                                         <thead>
                                             <tr>
                                                 <th>Id</th>
+                                                <th>Status</th>
                                                 <th>Title</th>
                                                 <th>Due Date</th>
                                                 <th>Category</th>
@@ -122,7 +123,7 @@
                                             <input type="text" id="viewtaskTitle" name="viewtaskTitle" placeholder="Title" maxlength="50" class="form-control">
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <!-- <div class="row form-group">
                                         <div class="col col-md-3">
                                         <i style =padding-right:16px; class="fa fa-users"></i>
                                             <label for="viewtaskCategory" class="form-control-label">Category</label>
@@ -134,7 +135,7 @@
                                                 <option value="Work">Work</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="row form-group">
                                         <div class="col col-md-3">
                                         <i style =padding-right:16px; class="fa fa-comment"></i>
@@ -144,7 +145,7 @@
                                             <textarea name="viewtaskDescription" id="viewtaskDescription" rows="12" placeholder="Description" class="form-control" maxlength="2000"></textarea>
                                         </div>
                                     </div>
-                                    <div class="row form-group">
+                                    <!-- <div class="row form-group">
                                         <div class="col col-md-3">
                                         <i style =padding-right:16px; class="fa fa-calendar"></i>
                                             <label for="viewtaskDueDate" class=" form-control-label">Due Date</label>
@@ -156,7 +157,7 @@
                                             value=""
                                             id="viewtaskDueDate" name="viewtaskDueDate" class="form-control">
                                         </div>
-                                    </div>
+                                    </div> -->
                                     
                             </form>
                         </div>
@@ -216,7 +217,8 @@
                                             <label for="taskDueDate" class=" form-control-label">Due Date</label>
                                         </div>
                                         <?php date_default_timezone_set('Asia/Manila');
-                                        $time = new DateTime(); ?>
+                                        $time = new DateTime();
+                                        $time->add(new DateInterval('P1D')); ?>
                                         <div class="col-4 col-md-8">
                                             <input type="datetime-local" 
                                             value="<?php echo $time->format('Y-m-d\TH:i')?>"
@@ -359,35 +361,60 @@ $(document).ready(function(){
             "ajax": "<?php echo base_url()?>user/home/view_task",
             "columns": [
                 { data: "id"},
-                { data: "taskTitle"},
-                { data: "taskDueDate", render: function(data, type, row){
-                    if(moment(data).format('MM DD YYYY, h:mm:ss') <= moment().format('MM DD YYYY, h:mm:ss') &&
-                    moment(data).format('MM DD YYYY, h:mm:ss') >= moment().subtract(1, 'days').format('MM DD YYYY, h:mm:ss')){
-                        return moment(data).format('LLL')+' - '+'<span class="badge badge-warning">Due Soon</span>';
+                { data: "taskStatus", render: function(data, type, row){
+                    if(data == 1){
+                        return '<div><input type="checkbox" value="'+row.id+'" id="taskComplete" name="taskComplete"></div>'
                     }
-                    else if((moment(data).format('MM DD YYYY, h:mm:ss')) <= (moment().format('MM DD YYYY, h:mm:ss'))){
-                        return moment(data).format('LLL')+' - '+'<span class="badge badge-danger">Over Due</span>';
+                    if(data == 2){
+                        return '<div><input type="checkbox" value="'+row.id+'" id="taskUncomplete" name="taskUncomplete" checked></div>'
+                    }
+                }},
+                { data: "taskTitle", render: function(data, type, row){
+                    return '<button class="btn btn_view" and style="background-color:transparent" value="'+row.id+'" title="View" type="button" alt="View">'+data+'</button></div>';
+                }},
+                { data: "taskDueDate", render: function(data, type, row){
+                    if(row.taskStatus == 2
+                    ){
+                        return moment(data).format('LLL')+' - '+'<span class="badge badge-pill badge-success">Complete</span>';
+                    }
+                    else if(moment(data).format('MM DD YYYY, h:mm:ss') <= moment().format('MM DD YYYY, h:mm:ss') &&
+                    moment(data).format('MM DD YYYY, h:mm:ss') >= moment().subtract(1, 'days').format('MM DD YYYY, h:mm:ss') &&
+                    row.taskStatus == 1
+                    ){
+                        return moment(data).format('LLL')+' - '+'<span class="badge badge-pill badge-warning">Due Soon</span>';
+                    }
+                    else if((moment(data).format('MM DD YYYY, h:mm:ss')) <= (moment().format('MM DD YYYY, h:mm:ss')) &&
+                    row.taskStatus == 1){
+                        return moment(data).format('LLL')+' - '+'<span class="badge badge-pill badge-danger">Over Due</span>';
                     }
                     else{
                         return moment(data).format('LLL');
                     }
-                }, "orderData":[2]},
-                { data: "taskCategory"},
+                }, "orderData":[3]},
+                { data: "taskCategory", render: function(data, type, row){
+                    if(data == 'Personal'){
+                        return '<a style="color:orange">'+ data +'</a>'
+                    }
+                    else if(data == 'Education'){
+                        return '<a style="color:navy">'+ data +'</a>'
+                    }
+                    else if(data == 'Work'){
+                        return '<a style="color:olive">'+ data +'</a>'
+                    }
+                    
+                }},
                 { data: "taskStatus", render: function(data, type, row){
-                    if(data == 1){
+                    
                         return '<div class="btn-group">'+
                                 // '<button class="btn btn-primary btn-sm btn_view" value="'+row.id+'" title="View" type="button" alt="View"><i class="fa fa-eye"></i> </button>'+
                                 '<button class="btn btn-warning btn-sm btn_update" value="'+row.id+'" title="Edit" type="button" alt="View"><i class="fa fa-edit"></i> </button>'+
                                 '<button class="btn btn-danger btn-sm btn_delete" value="'+row.id+'" title="Delete" type="button" alt="Delete"> <i class="fa fa-trash"> </i></button></div>';
-                    }   
-                    else{
-                        return '<button>Activate</button>';
-                    }
+                    
                 }}
             ],
 
             "aoColumnDefs": [{"bVisible": false, "aTargets": [0]}],
-            "order": [[2, "asc"]]
+            "order": [[3, "asc"]]
         })
     }
 
@@ -502,7 +529,7 @@ $(document).ready(function(){
     $('#editTaskForm').on('submit', function(e){
                         e.preventDefault();
                         $("#btnUpdateTask").attr("disabled", true);
-                        
+
                         var id = document.editTaskForm.id.value
 
                         var editTaskTitle = document.editTaskForm.edittaskTitle.value;
@@ -544,9 +571,6 @@ $(document).ready(function(){
                         })
                         
                 });
-
-    // END OF // Update contest
-
     // END OF UPDATE TASK
 
     // DELETE TASK
@@ -576,6 +600,38 @@ $(document).ready(function(){
             })
     })
     // END OF DELETE TASK
+
+    // COMPLETE TASK
+    $(document).on("change", "#taskComplete", function(){
+        var id = this.value;
+
+        // Ajax call
+            $.ajax({
+                url: '<?php echo base_url()?>user/home/complete_task',
+                data: {id: id},
+                    success:function(){
+                        refresh()
+                    }
+            });
+        // End of ajax call  
+    });
+    // END OF COMPLETE TASK
+
+    // COMPLETE TASK
+    $(document).on("change", "#taskUncomplete", function(){
+        var id = this.value;
+
+        // Ajax call
+            $.ajax({
+                url: '<?php echo base_url()?>user/home/uncomplete_task',
+                data: {id: id},
+                    success:function(){
+                        refresh()
+                    }
+            });
+        // End of ajax call  
+    });
+    // END OF COMPLETE TASK
 
 
 

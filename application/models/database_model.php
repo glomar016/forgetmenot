@@ -15,7 +15,7 @@ class Database_model extends CI_Model {
     function view($statusColumn, $tableName, $orderByColumn){
         $this->db->select("*");
         $this->db->from($tableName);
-        $this->db->where($statusColumn, "1");
+        $this->db->where($statusColumn.'!=', "0");
         $this->db->order_by($orderByColumn, "DESC");
         $query = $this->db->get();
         $data = $query->result();
@@ -49,5 +49,56 @@ class Database_model extends CI_Model {
     }
 
     // -- END OF CRUD --
+
+    // COMPLETE TASK
+    function complete_task($id, $statusColumn, $tableName){
+        $this->db->set($statusColumn, '2');
+        $this->db->where("id", $id);
+        $this->db->update($tableName);
+    }
+
+    // UNCOMPLETE TASK
+    function uncomplete_task($id, $statusColumn, $tableName){
+        $this->db->set($statusColumn, '1');
+        $this->db->where("id", $id);
+        $this->db->update($tableName);
+    }
+
+    // GET EDUCATION COLUMN
+    function view_education($statusColumn, $tableName, $orderByColumn, $category){
+        $this->db->select("*");
+        $this->db->from($tableName);
+        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where('taskCategory', $category);
+        $this->db->order_by($orderByColumn, "DESC");
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+
+    // GET PERSONAL COLUMN
+    function view_personal($statusColumn, $tableName, $orderByColumn, $category){
+        $this->db->select("*");
+        $this->db->from($tableName);
+        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where('taskCategory', $category);
+        $this->db->order_by($orderByColumn, "DESC");
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+
+    // GET WORK COLUMN
+    function view_work($statusColumn, $tableName, $orderByColumn, $category){
+        $this->db->select("*");
+        $this->db->from($tableName);
+        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where('taskCategory', $category);
+        $this->db->order_by($orderByColumn, "DESC");
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+
 
 }

@@ -196,7 +196,7 @@
                                         </div>
                                         <div class="col-4 col-md-8">
                                             <select name="taskCategory" id="taskCategory" class="form-control">
-                                                <option value="Education" selected>Education</option>
+                                                <option value="Work" selected>Work</option>
                                             </select>
                                         </div>
                                     </div>
@@ -264,8 +264,7 @@
                                         </div>
                                         <div class="col-4 col-md-8">
                                             <select name="edittaskCategory" id="edittaskCategory" class="form-control">
-                                                <option value="Education" selected>Education</option>
-                                                
+                                                <option value="Work" selected>Work</option>
                                             </select>
                                         </div>
                                     </div>
@@ -355,7 +354,7 @@ $(document).ready(function(){
     function loadtable(){
         taskDataTable = $('#taskTable').DataTable( {
             "pageLength": 10,
-            "ajax": "<?php echo base_url()?>user/education/view_task",
+            "ajax": "<?php echo base_url()?>user/work/view_task",
             "columns": [
                 { data: "id"},
                 { data: "taskStatus", render: function(data, type, row){
@@ -418,7 +417,7 @@ $(document).ready(function(){
     
     
     function refresh(){
-        var url = "<?php echo base_url()?>user/education/view_task";
+        var url = "<?php echo base_url()?>user/work/view_task";
 
         taskDataTable.ajax.url(url).load();
     }
@@ -455,7 +454,7 @@ $(document).ready(function(){
                         var form = $('#addTaskForm');                                
                         // ajax post
                         $.ajax({
-                            url: '<?php echo base_url()?>user/education/add_task',
+                            url: '<?php echo base_url()?>user/work/add_task',
                             type: 'post',
                             data: form.serialize(),
 
@@ -479,7 +478,7 @@ $(document).ready(function(){
         var id = this.value;
         
         $.ajax({
-            url: '<?php echo base_url()?>user/education/get_task/'+id,
+            url: '<?php echo base_url()?>user/work/get_task/'+id,
             type: "GET",
             dataType: "JSON",
 
@@ -503,7 +502,7 @@ $(document).ready(function(){
         var id = this.value;
         
         $.ajax({
-            url: '<?php echo base_url()?>user/education/get_task/'+id,
+            url: '<?php echo base_url()?>user/work/get_task/'+id,
             type: "GET",
             dataType: "JSON",
 
@@ -548,7 +547,7 @@ $(document).ready(function(){
                             if (result.isConfirmed) {
                         // Ajax call
                             $.ajax({
-                                url: '<?php echo base_url()?>user/education/update_task',
+                                url: '<?php echo base_url()?>user/work/update_task',
                                 type: 'post',
                                 data: form,
 
@@ -586,7 +585,7 @@ $(document).ready(function(){
             if (result.isConfirmed) {
                 // Ajax call
                     $.ajax({
-                            url: '<?php echo base_url()?>user/education/delete_task',
+                            url: '<?php echo base_url()?>user/work/delete_task',
                             data: {id: id},
                                 success:function(){
                                     refresh()
@@ -604,7 +603,7 @@ $(document).ready(function(){
 
         // Ajax call
             $.ajax({
-                url: '<?php echo base_url()?>user/education/complete_task',
+                url: '<?php echo base_url()?>user/work/complete_task',
                 data: {id: id},
                     success:function(){
                         refresh()
@@ -620,7 +619,7 @@ $(document).ready(function(){
 
         // Ajax call
             $.ajax({
-                url: '<?php echo base_url()?>user/education/uncomplete_task',
+                url: '<?php echo base_url()?>user/work/uncomplete_task',
                 data: {id: id},
                     success:function(){
                         refresh()

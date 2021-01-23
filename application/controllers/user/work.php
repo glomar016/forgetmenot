@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Personal extends CI_Controller {
+class Work extends CI_Controller {
 
 	/**
 	 * Index Page for this controller.
@@ -22,9 +22,9 @@ class Personal extends CI_Controller {
 	{
 		$this->load->model('database_model');
 
-		$data["data"] = $this->database_model->view_personal('taskStatus', "t_task", 'taskDueDate', 'Education');
+		$data["data"] = $this->database_model->view_education('taskStatus', "t_task", 'taskDueDate', 'Work');
 
-		$this->load->view('user/personal', $data);
+		$this->load->view('user/work', $data);
 	}
 	
 	public function add_task()
@@ -56,7 +56,7 @@ class Personal extends CI_Controller {
 
 		$dateToday = mdate("%Y-%m-%d %h:%i:%s");
 
-		$data["data"] = $this->database_model->view_personal('taskStatus', "t_task", 'taskDueDate', 'Personal');
+		$data["data"] = $this->database_model->view_education('taskStatus', "t_task", 'taskDueDate', 'Work');
 
 		echo json_encode($data);
 	}
