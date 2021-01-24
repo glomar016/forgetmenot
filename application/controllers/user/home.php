@@ -35,6 +35,7 @@ class Home extends CI_Controller {
 		$taskCategory = $this->input->post('taskCategory');
 		$taskDescription = $this->input->post('taskDescription');
 		$taskDueDate = $this->input->post('taskDueDate');
+		
 
 		// making data of assoc array to pass to model
 		$data = array(
@@ -43,6 +44,7 @@ class Home extends CI_Controller {
 			"taskDescription" =>$taskDescription,
 			"taskDueDate" => $taskDueDate
 		);
+
 
 		$this->database_model->create($data, "t_task");
 	}

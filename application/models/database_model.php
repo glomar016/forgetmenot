@@ -41,8 +41,8 @@ class Database_model extends CI_Model {
     function get($id, $tableName)
     {
         $this->db->select("*");
-        $this->db->where("id", $id);
         $this->db->from($tableName);
+        $this->db->where("id", $id);
         $query = $this->db->get();
         $data = $query->result();
         return $data;

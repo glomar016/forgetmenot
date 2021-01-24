@@ -171,7 +171,7 @@
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header" style=background-color:#46d4e0;>
+                    <div class="modal-header" style="background-color:#28a745;">
                                 <h4 class="modal-title" id="largeModalLabel" style=color:white;><strong>Add Task</strong></h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>

@@ -111,6 +111,7 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                     </div>
+                    
                     <div class="card">   
                         <div class="card-body card-block">
                             <form action="" method="post" name="viewTaskForm" id="viewTaskForm">
@@ -171,7 +172,7 @@
     <div class="modal fade" id="addTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <div class="modal-header" style=background-color:#46d4e0;>
+                    <div class="modal-header" style="background-color:#28a745;">
                                 <h4 class="modal-title" id="largeModalLabel" style=color:white;><strong>Add Task</strong></h4>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
@@ -373,12 +374,11 @@ $(document).ready(function(){
                     return '<button class="btn btn_view" and style="background-color:transparent" value="'+row.id+'" title="View" type="button" alt="View">'+data+'</button></div>';
                 }},
                 { data: "taskDueDate", render: function(data, type, row){
-                    if(row.taskStatus == 2
-                    ){
+                    if(row.taskStatus == 2){
                         return moment(data).format('LLL')+' - '+'<span class="badge badge-pill badge-success">Complete</span>';
                     }
-                    else if(moment(data).format('MM DD YYYY, h:mm:ss') <= moment().format('MM DD YYYY, h:mm:ss') &&
-                    moment(data).format('MM DD YYYY, h:mm:ss') >= moment().subtract(1, 'days').format('MM DD YYYY, h:mm:ss') &&
+                    else if(moment(data).format('MM DD YYYY, h:mm:ss') >= moment().format('MM DD YYYY, h:mm:ss') &&
+                    moment(data).format('MM DD YYYY, h:mm:ss') <= moment().add(1, 'days').format('MM DD YYYY, h:mm:ss') &&
                     row.taskStatus == 1
                     ){
                         return moment(data).format('LLL')+' - '+'<span class="badge badge-pill badge-warning">Due Soon</span>';
@@ -401,7 +401,6 @@ $(document).ready(function(){
                     else if(data == 'Work'){
                         return '<a style="color:olive">'+ data +'</a>'
                     }
-                    
                 }},
                 { data: "taskStatus", render: function(data, type, row){
                     
@@ -414,7 +413,7 @@ $(document).ready(function(){
             ],
 
             "aoColumnDefs": [{"bVisible": false, "aTargets": [0]}],
-            "order": [[3, "asc"]]
+            "order": [[0, "desc"]]
         })
     }
 
