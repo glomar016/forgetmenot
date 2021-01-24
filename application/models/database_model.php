@@ -1,7 +1,8 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Database_model extends CI_Model {
+class Database_model extends CI_Model
+{
 
     // -- CRUD --
     // CREATING 
@@ -12,10 +13,11 @@ class Database_model extends CI_Model {
     }
 
     // GET ALL COLUMN
-    function view($statusColumn, $tableName, $orderByColumn){
+    function view($statusColumn, $tableName, $orderByColumn)
+    {
         $this->db->select("*");
         $this->db->from($tableName);
-        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where($statusColumn . '!=', "0");
         $this->db->order_by($orderByColumn, "DESC");
         $query = $this->db->get();
         $data = $query->result();
@@ -30,7 +32,8 @@ class Database_model extends CI_Model {
     }
 
     // DISABLE
-    function delete($id, $statusColumn, $tableName){
+    function delete($id, $statusColumn, $tableName)
+    {
         $this->db->set($statusColumn, '0');
         $this->db->where("id", $id);
         $this->db->update($tableName);
@@ -51,24 +54,27 @@ class Database_model extends CI_Model {
     // -- END OF CRUD --
 
     // COMPLETE TASK
-    function complete_task($id, $statusColumn, $tableName){
+    function complete_task($id, $statusColumn, $tableName)
+    {
         $this->db->set($statusColumn, '2');
         $this->db->where("id", $id);
         $this->db->update($tableName);
     }
 
     // UNCOMPLETE TASK
-    function uncomplete_task($id, $statusColumn, $tableName){
+    function uncomplete_task($id, $statusColumn, $tableName)
+    {
         $this->db->set($statusColumn, '1');
         $this->db->where("id", $id);
         $this->db->update($tableName);
     }
 
     // GET EDUCATION COLUMN
-    function view_education($statusColumn, $tableName, $orderByColumn, $category){
+    function view_education($statusColumn, $tableName, $orderByColumn, $category)
+    {
         $this->db->select("*");
         $this->db->from($tableName);
-        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where($statusColumn . '!=', "0");
         $this->db->where('taskCategory', $category);
         $this->db->order_by($orderByColumn, "DESC");
         $query = $this->db->get();
@@ -77,10 +83,11 @@ class Database_model extends CI_Model {
     }
 
     // GET PERSONAL COLUMN
-    function view_personal($statusColumn, $tableName, $orderByColumn, $category){
+    function view_personal($statusColumn, $tableName, $orderByColumn, $category)
+    {
         $this->db->select("*");
         $this->db->from($tableName);
-        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where($statusColumn . '!=', "0");
         $this->db->where('taskCategory', $category);
         $this->db->order_by($orderByColumn, "DESC");
         $query = $this->db->get();
@@ -89,10 +96,11 @@ class Database_model extends CI_Model {
     }
 
     // GET WORK COLUMN
-    function view_work($statusColumn, $tableName, $orderByColumn, $category){
+    function view_work($statusColumn, $tableName, $orderByColumn, $category)
+    {
         $this->db->select("*");
         $this->db->from($tableName);
-        $this->db->where($statusColumn.'!=', "0");
+        $this->db->where($statusColumn . '!=', "0");
         $this->db->where('taskCategory', $category);
         $this->db->order_by($orderByColumn, "DESC");
         $query = $this->db->get();
@@ -100,5 +108,29 @@ class Database_model extends CI_Model {
         return $data;
     }
 
+    //GET TASK LIST
+    function view_task_list()
+    {
+        $query = $this->db->query("SELECT 
+        id
+        , taskTitle
+        , taskDescription
+        , taskDueDate
+		, DATE_FORMAT(taskDueDate,'%b %d, %Y %l:%i %p') AS `taskDueDateFormatted`
+        , taskStatus
+        , taskCategory
+        , CASE 
+        WHEN taskStatus = '2' THEN '3'
+        WHEN DATEDIFF(taskDueDate, NOW()) <= 0 THEN '1' 
+        WHEN DATEDIFF(taskDueDate, NOW()) >= 1 AND DATEDIFF(taskDueDate, NOW()) <= 3 THEN '2'
+        WHEN DATEDIFF(taskDueDate, NOW()) >= 4 AND DATEDIFF(taskDueDate, NOW()) <= 7 THEN '3'
+        WHEN DATEDIFF(taskDueDate, NOW()) >= 8 THEN '4' 
+        END AS `priority`
+        FROM t_task
+        WHERE taskStatus != '0'
+        ORDER BY priority, taskDueDate");
 
+        $data = $query->result();
+        return $data;
+    }
 }
