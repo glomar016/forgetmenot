@@ -328,7 +328,7 @@ function loadtable() {
                                     `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Due Today - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             } else if(task_due__hours > 0){
                                 task_status =
-                                    `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Almost Due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
+                                    `<small class="ml-2 badge bg-gradient-yellow d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Almost Due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             }
                         } else if (task_due__date >= 1 && task_due__date <= 3) {
                             // OVER DUE
@@ -360,9 +360,10 @@ function loadtable() {
                              </div>
                           </div>
                           <div class="col-11 task-details">
-                             <h5 class="text-bold mb-0">${data[i]['taskTitle']}  ${task_status}</h5>
+                             <button class="btn btn_update text-left" style="padding:0;" title="Edit Task"
+                             value="${data[i]['id']}">${data[i]['taskTitle']} ${task_status}<br>
                              <small style="color: #acacac; font-size:14px;">${data[i]['taskDueDateFormatted']}</small>
-                             <p class="mb-0">${data[i]['taskDescription']}</p>
+                             <p class="mb-0">${data[i]['taskDescription']}</p></button>
                           </div>
                        </div>
                     </div>
@@ -418,7 +419,7 @@ $('#addTaskForm').on('submit', function(e) {
 
     var taskDueDate = new Date(taskDueDate);
 
-    if (taskDescription == '' || taskCategory == '' || taskDueDate == '') {
+    if (taskTitle == '' || taskDescription == '' || taskCategory == '' || taskDueDate == '') {
         Swal.fire({
             title: 'Warning!',
             text: 'Please fill out required field.',
@@ -512,37 +513,52 @@ $('#editTaskForm').on('submit', function(e) {
     var editTaskCategory = document.editTaskForm.edittaskCategory.value;
     var editTaskDescription = document.editTaskForm.edittaskDescription.value;
     var editTaskDueDate = document.editTaskForm.edittaskDueDate.value;
+    
 
-    var form = ($(this).serialize());
-
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, update it!'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Ajax call
-            $.ajax({
-                url: '<?php echo base_url() ?>user/home/update_task',
-                type: 'post',
-                data: form,
-
-                success: function() {
-                    $("#btnUpdateTask").attr("disabled", false);
-                    $('#editTaskModal').modal('hide');
-                    $('#editTaskModal form')[0].reset();
-                    refresh();
-                }
-            });
-            // End of ajax call
-        } else {
+    if(editTaskTitle == "" || editTaskDescription == ""){
+        Swal.fire({
+            title: 'Warning!',
+            text: 'Please fill out required field.',
+            icon: 'warning',
+            confirmButtonText: 'Ok'
+        }).then((result) => {
             $("#btnUpdateTask").attr("disabled", false);
-        }
-    })
+        })
+        $("#btnUpdateTask").attr("disabled", false);
+    }
+    else{
+        var form = ($(this).serialize());
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, update it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Ajax call
+                $.ajax({
+                    url: '<?php echo base_url() ?>user/home/update_task',
+                    type: 'post',
+                    data: form,
+
+                    success: function() {
+                        $("#btnUpdateTask").attr("disabled", false);
+                        $('#editTaskModal').modal('hide');
+                        $('#editTaskModal form')[0].reset();
+                        refresh();
+                    }
+                });
+                // End of ajax call
+            } else {
+                $("#btnUpdateTask").attr("disabled", false);
+            }
+        })
+
+    }
 
 });
 // END OF UPDATE TASK
