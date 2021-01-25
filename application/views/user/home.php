@@ -286,7 +286,7 @@
 <script type="text/javascript">
 function loadtable() {
 
-    let receivedTable = $("#taskTable").dataTable({
+    receivedTable = $("#taskTable").DataTable({
         ajax: {
             url: "<?php echo base_url() ?>user/home/view_task",
             dataSrc: function(data) {
@@ -314,6 +314,8 @@ function loadtable() {
                     if (task_status == "1") {
                         task_due__date = moment(data[i]['taskDueDate']).diff(moment(), 'days');
                         task_due__hours = moment(data[i]['taskDueDate']).diff(moment(), 'hours');
+                        checkbox = `<input type="checkbox" value="${data[i]['id']}" class="taskComplete" name="taskComplete" id="taskComplete${data[i]['id']}">
+                        <label for="taskComplete${data[i]['id']}"></label>`
 
                         if (task_due__date < 0) {
                             task_status =
@@ -326,7 +328,7 @@ function loadtable() {
                                     `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Due Today - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             } else {
                                 task_status =
-                                    `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>almost due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
+                                    `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Almost Due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             }
                         } else if (task_due__date >= 1 && task_due__date <= 3) {
                             // OVER DUE
@@ -345,16 +347,16 @@ function loadtable() {
                     } else if (task_status == "2") {
                         task_status =
                             `<small class="ml-2 badge bg-gradient-green d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i> Completed</small>`;
+                        checkbox = `<input checked type="checkbox" value="${data[i]['id']}" class="taskUncomplete" name="taskUncomplete" id="taskUncomplete${data[i]['id']}">
+                        <label for="taskUncomplete${data[i]['id']}"></label>`
                     }
-
 
                     list = `<div class="small-box mb-0" style=" overflow: hidden;">
                     <div class="inner p-2">
                        <div class="row mr-0 ml-0">
                           <div class="col-1">
                              <div class="icheck-primary ml-1 mt-2">
-                                <input type="checkbox" value="" name="todo1" id="todoCheck1">
-                                <label for="todoCheck1"></label>
+                                ${checkbox}
                              </div>
                           </div>
                           <div class="col-11 task-details">
@@ -367,18 +369,19 @@ function loadtable() {
                     <div class="icon">
                        ${listIcon}
                     </div>
-                 </div>`
+                    </div>`
                     return_data.push({
                         DT_RowId: data[i]["id"],
                         taskDetails: list,
                     });
+                    
                 }
 
                 return return_data;
             },
         },
         columns: [{
-            data: "taskDetails"
+            data: "taskDetails",
         }],
         bSort: false,
         language: {
@@ -388,14 +391,15 @@ function loadtable() {
             lengthMenu: "Show _MENU_ Task per page",
             zeroRecords: "No Task available",
         },
+        
     });
 }
 
 
 function refresh() {
-    var url = "<?php echo base_url() ?>user/home/view_task";
+    var url = "<?php echo base_url()?>user/home/view_task";
 
-    taskDataTable.ajax.url(url).load();
+    receivedTable.ajax.url(url).load();
 }
 
 loadtable()
@@ -574,7 +578,7 @@ $(document).on("click", ".btn_delete", function() {
 // END OF DELETE TASK
 
 // COMPLETE TASK
-$(document).on("change", "#taskComplete", function() {
+$(document).on("change", ".taskComplete", function() {
     var id = this.value;
 
     // Ajax call
@@ -591,8 +595,8 @@ $(document).on("change", "#taskComplete", function() {
 });
 // END OF COMPLETE TASK
 
-// COMPLETE TASK
-$(document).on("change", "#taskUncomplete", function() {
+// UNCOMPLETE TASK
+$(document).on("change", ".taskUncomplete", function() {
     var id = this.value;
 
     // Ajax call
