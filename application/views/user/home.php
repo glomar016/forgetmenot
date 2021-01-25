@@ -317,16 +317,16 @@ function loadtable() {
                         checkbox = `<input type="checkbox" value="${data[i]['id']}" class="taskComplete" name="taskComplete" id="taskComplete${data[i]['id']}">
                         <label for="taskComplete${data[i]['id']}"></label>`
 
-                        if (task_due__date < 0) {
+                        if (task_due__date <= 0 && task_due__hours < 0) {
                             task_status =
-                                `<small class="ml-2 badge bg-gradient-dark d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Overdue - ${(moment(data[i]['taskDueDate']).diff(moment(), 'days') * -1)} Day/s late</small>`;
+                                `<small class="ml-2 badge bg-gradient-dark d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Overdue - ${(moment(data[i]['taskDueDate']).diff(moment(), 'days') * -1)} Day/s and ${(moment(data[i]['taskDueDate']).diff(moment(), 'hours'))} hours/s late</small>`;
                         } else if (task_due__date == 0) {
                             // DUE TODAY
                             if (moment(data[i]['taskDueDate']).format("DD MM YYYY") == moment().format(
                                     "DD MM YYYY")) {
                                 task_status =
                                     `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Due Today - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
-                            } else {
+                            } else if(task_due__hours > 0){
                                 task_status =
                                     `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Almost Due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             }
