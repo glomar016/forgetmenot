@@ -319,7 +319,7 @@ function loadtable() {
 
                         if (task_due__date <= 0 && task_due__hours < 0) {
                             task_status =
-                                `<small class="ml-2 badge bg-gradient-dark d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Overdue - ${(moment(data[i]['taskDueDate']).diff(moment(), 'days') * -1)} Day/s and ${(moment(data[i]['taskDueDate']).diff(moment(), 'hours'))} hours/s late</small>`;
+                                `<small class="ml-2 badge bg-gradient-dark d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Overdue - ${(moment(data[i]['taskDueDate']).diff(moment(), 'days') * -1)} Day/s late</small>`;
                         } else if (task_due__date == 0) {
                             // DUE TODAY
                             if (moment(data[i]['taskDueDate']).format("DD MM YYYY") == moment().format(
@@ -349,6 +349,8 @@ function loadtable() {
                             `<small class="ml-2 badge bg-gradient-green d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i> Completed</small>`;
                         checkbox = `<input checked type="checkbox" value="${data[i]['id']}" class="taskUncomplete" name="taskUncomplete" id="taskUncomplete${data[i]['id']}">
                         <label for="taskUncomplete${data[i]['id']}"></label>`
+                        listIcon = `<i><button class="btn btn-danger btn-lg btn_delete" style="position:absolute; right:0px; top:10px" value="${data[i]['id']}" title="Delete" type="button" alt="Delete"> <i class="fa fa-trash"></i></button></i>`;
+                        
                     }
 
                     list = `<div class="small-box mb-0" style=" overflow: hidden;">
