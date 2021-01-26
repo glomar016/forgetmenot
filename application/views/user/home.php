@@ -52,7 +52,10 @@
                             <div class="card-body">
                                 <div class="table-responsive p-0">
                                     <table id="taskTable" class="table" style="width:100%">
-
+                                        <thead class="text-right">
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
                                     </table>
 
                                 </div>
@@ -141,7 +144,7 @@
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <div class="modal-header" style=background-color:#46d4e0;>
+                <div class="modal-header" style=background-color:#28a745;>
                     <h4 class="modal-title" id="largeModalLabel" style=color:white;><strong>Add Task</strong></h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -287,9 +290,30 @@
 function loadtable() {
 
     receivedTable = $("#taskTable").DataTable({
+        initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        var category = $('<select style="padding:3px;"><option value="">All Category</option></select>')
+                            .appendTo( $(column.header()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val)
+                                    .draw();
+                            } );
+                            category.append( '<option value="Education">Education</option>' )
+                            category.append( '<option value="Personal">Personal</option>' )
+                            category.append( '<option value="Work">Work</option>' )
+                    } );
+                },
+        
         ajax: {
             url: "<?php echo base_url() ?>user/home/view_task",
             dataSrc: function(data) {
+                
 
                 var return_data = new Array();
 
@@ -298,14 +322,17 @@ function loadtable() {
                     switch (data[i]["taskCategory"]) {
                         case "Education":
                             listIcon = `<i class="fas fa-book"></i>`;
+                            taskCategory = `Education`;
                             break;
 
                         case "Work":
                             listIcon = `<i class="fas fa-briefcase"></i>`;
+                            taskCategory = `Work`;
                             break;
 
                         case "Personal":
                             listIcon = `<i class="fas fa-running"></i>`;
+                            taskCategory = `Personal`;
                             break;
                     }
 
@@ -364,7 +391,7 @@ function loadtable() {
                           <div class="col-11 task-details">
                              <button class="btn btn_update text-left" style="padding:0;" title="Edit Task"
                              value="${data[i]['id']}">${data[i]['taskTitle']} ${task_status}<br>
-                             <small style="color: #acacac; font-size:14px;">${data[i]['taskDueDateFormatted']}</small>
+                             <small style="color: #acacac; font-size:14px;">${data[i]['taskDueDateFormatted']} - ${taskCategory}</small>
                              <p class="mb-0">${data[i]['taskDescription']}</p></button>
                           </div>
                        </div>
@@ -395,7 +422,9 @@ function loadtable() {
             zeroRecords: "No Task available",
         },
         
+        
     });
+    
 }
 
 
@@ -406,6 +435,10 @@ function refresh() {
 }
 
 loadtable()
+
+
+
+
 
 
 // Create task
