@@ -22,6 +22,14 @@ class Work extends CI_Controller {
 	{
 		$this->load->model('database_model');
 
+		if (isset($this->session->userdata['logged_in'])) {
+			$userEmail = ($this->session->userdata['logged_in']['userEmail']);
+			$userId = ($this->session->userdata['logged_in']['userId']);
+		} 
+		else {
+			header("location: ".base_url()."user/login");
+		}
+
 		$data["data"] = $this->database_model->view_education('taskStatus', "t_task", 'taskDueDate', 'Work');
 
 		$this->load->view('user/work', $data);
