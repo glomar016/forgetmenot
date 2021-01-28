@@ -1,3 +1,16 @@
+<?php 
+
+if (isset($this->session->userdata['logged_in'])) {
+    $userEmail = ($this->session->userdata['logged_in']['userEmail']);
+    $userId = ($this->session->userdata['logged_in']['userId']);
+} 
+else {
+    header("location: ".base_url()."user/login");
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -311,7 +324,7 @@ function loadtable() {
                 },
         
         ajax: {
-            url: "<?php echo base_url() ?>user/home/view_task",
+            url: "<?php echo base_url() ?>user/home/view_task/"+<?php echo $userId ?>,
             dataSrc: function(data) {
                 
 
@@ -429,7 +442,7 @@ function loadtable() {
 
 
 function refresh() {
-    var url = "<?php echo base_url()?>user/home/view_task";
+    var url = "<?php echo base_url()?>user/home/view_task/"+<?php echo $userId ?>;
 
     receivedTable.ajax.url(url).load();
 }
@@ -469,7 +482,7 @@ $('#addTaskForm').on('submit', function(e) {
         var form = $('#addTaskForm');
         // ajax post
         $.ajax({
-            url: '<?php echo base_url() ?>user/home/add_task',
+            url: '<?php echo base_url() ?>user/home/add_task/'+<?php echo $userId?>,
             type: 'post',
             data: form.serialize(),
 
@@ -576,7 +589,7 @@ $('#editTaskForm').on('submit', function(e) {
             if (result.isConfirmed) {
                 // Ajax call
                 $.ajax({
-                    url: '<?php echo base_url() ?>user/home/update_task',
+                    url: '<?php echo base_url() ?>user/home/update_task/'+<?php echo $userId ?>,
                     type: 'post',
                     data: form,
 

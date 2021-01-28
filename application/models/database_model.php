@@ -109,7 +109,7 @@ class Database_model extends CI_Model
     }
 
     //GET TASK LIST
-    function view_task_list()
+    function view_task_list($userId)
     {
         $query = $this->db->query("SELECT 
         id
@@ -128,6 +128,7 @@ class Database_model extends CI_Model
         END AS `priority`
         FROM t_task
         WHERE taskStatus != '0'
+        AND taskUser = $userId
         ORDER BY priority, taskDueDate");
 
         $data = $query->result();

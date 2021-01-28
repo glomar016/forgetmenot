@@ -21,22 +21,11 @@ class Home extends CI_Controller
 	 */
 	public function index()
 	{
-		$this->load->model('database_model');
 
-		if (isset($this->session->userdata['logged_in'])) {
-				$userEmail = ($this->session->userdata['logged_in']['userEmail']);
-				$userId = ($this->session->userdata['logged_in']['userId']);
-			} 
-			else {
-				header("location: ".base_url()."user/login");
-		}
-
-		$data["data"] = $this->database_model->view('taskStatus', "t_task", 'taskDueDate');
-
-		$this->load->view('user/home', $data);
+		$this->load->view('user/home');
 	}
 
-	public function add_task()
+	public function add_task($userId)
 	{
 		$this->load->model('database_model');
 
@@ -44,21 +33,21 @@ class Home extends CI_Controller
 		$taskCategory = $this->input->post('taskCategory');
 		$taskDescription = $this->input->post('taskDescription');
 		$taskDueDate = $this->input->post('taskDueDate');
-		
 
 		// making data of assoc array to pass to model
 		$data = array(
 			"taskTitle" => $taskTitle,
 			"taskCategory" => $taskCategory,
 			"taskDescription" => $taskDescription,
-			"taskDueDate" => $taskDueDate
+			"taskDueDate" => $taskDueDate,
+			"taskUser" => $userId
 		);
 
 
 		$this->database_model->create($data, "t_task");
 	}
 
-	public function view_task()
+	public function view_task($userId)
 	{
 		// loading model that needed
 		$this->load->helper('date');
@@ -66,7 +55,7 @@ class Home extends CI_Controller
 
 		// $dateToday = mdate("%Y-%m-%d %h:%i:%s");
 
-		$data = $this->database_model->view_task_list();
+		$data = $this->database_model->view_task_list($userId);
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
@@ -96,7 +85,7 @@ class Home extends CI_Controller
 		echo json_encode($data);
 	}
 
-	public function update_task()
+	public function update_task($userId)
 	{
 		// loading model that needed
 		$this->load->model('database_model');
@@ -112,7 +101,8 @@ class Home extends CI_Controller
 			'taskTitle' => $taskTitle,
 			'taskCategory' => $taskCategory,
 			'taskDescription' => $taskDescription,
-			'taskDueDate' => $taskDueDate
+			'taskDueDate' => $taskDueDate,
+			'taskUser' => $userId
 		);
 
 		$this->database_model->update($id, $insert_data, "t_task");
