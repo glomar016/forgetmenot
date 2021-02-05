@@ -405,7 +405,7 @@ function loadtable() {
                              <button class="btn btn_update text-left" style="padding:0;" title="Edit Task"
                              value="${data[i]['id']}">${data[i]['taskTitle']} ${task_status}<br>
                              <small style="color: #acacac; font-size:14px;">${data[i]['taskDueDateFormatted']} - ${taskCategory}</small>
-                             <p class="mb-0">${data[i]['taskDescription']}</p></button>
+                             <p class="mb-0" style="white-space: pre-wrap;">${data[i]['taskDescription']}</p></button>
                           </div>
                        </div>
                     </div>

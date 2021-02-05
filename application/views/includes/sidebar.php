@@ -31,7 +31,7 @@
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="<?php echo base_url() ?>user/education" style="color:black" class="nav-link">
                         <i class="nav-icon fas fa-graduation-cap"></i>
                         <p>
@@ -54,7 +54,7 @@
                             Work
                         </p>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a href="<?php echo base_url() ?>user/logout" style="color:black" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>

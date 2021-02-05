@@ -120,11 +120,11 @@ class Database_model extends CI_Model
         , taskStatus
         , taskCategory
         , CASE 
-        WHEN taskStatus = '2' THEN '3'
+        WHEN taskStatus = '2' THEN '4'
         WHEN DATEDIFF(taskDueDate, NOW()) <= 0 THEN '1' 
         WHEN DATEDIFF(taskDueDate, NOW()) >= 1 AND DATEDIFF(taskDueDate, NOW()) <= 3 THEN '2'
         WHEN DATEDIFF(taskDueDate, NOW()) >= 4 AND DATEDIFF(taskDueDate, NOW()) <= 7 THEN '3'
-        WHEN DATEDIFF(taskDueDate, NOW()) >= 8 THEN '4' 
+        WHEN DATEDIFF(taskDueDate, NOW()) >= 8 THEN '3' 
         END AS `priority`
         FROM t_task
         WHERE taskStatus != '0'

@@ -140,7 +140,7 @@ $('#registerForm').on('submit', function(e){
                             Swal.fire({
                                 title: 'Success!',
                                 text: 'Successfully Registered!',
-                                icon: 'error',
+                                icon: 'sucess',
                                 confirmButtonText: 'Ok'
                                 }).then((result) => {
                                         $("#btn_register").val("Register").attr("disabled", false);
