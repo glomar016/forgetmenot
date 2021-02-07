@@ -201,6 +201,17 @@ else {
                             </div>
                             <div class="row form-group">
                                 <div class="col col-md-3">
+                                    <i style=padding-right:16px; class="fa fa-comment"></i>
+                                    <label for="taskFiles" class=" form-control-label">File Attached</label>
+                                    
+                                </div>
+                                <div class="col-4 col-md-8">
+                                    <input type="file" id="taskFiles" name="taskFiles" placeholder="Files"
+                                        class="form-control">
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-calendar"></i>
                                     <label for="taskDueDate" class=" form-control-label">Due Date</label>
                                 </div>
@@ -273,6 +284,20 @@ else {
                             </div>
                             <div class="row form-group">
                                 <div class="col col-md-3">
+                                    <i style=padding-right:16px; class="fa fa-comment"></i>
+                                    <label for="editaskFiles" class=" form-control-label">File Attached</label>
+                                    
+                                </div>
+                                <div class="col-4 col-md-8">
+                                <input type="file" id="edittaskFiles" name="edittaskFiles" placeholder="Files"
+                                class="form-control">
+                                <a id="filesAttached" name="filesAttached" href=""></a>
+                                    <button id="filesAttachedButton" style="padding:5px" class="btn btn-sm bg-transparent btn_delete_files"></button>
+                                </div>
+                                
+                            </div>
+                            <div class="row form-group">
+                                <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-calendar"></i>
                                     <label for="edittaskDueDate" class=" form-control-label">Due Date</label>
                                 </div>
@@ -282,7 +307,7 @@ else {
                                 </div>
                             </div>
                             <div style=float:right;>
-                                <input type="submit" id="btnUpdateTask" class="btn btn-sm btn-primary">
+                                <input type="submit" id="btnUpdateTask" value="Update" class="btn btn-sm btn-warning">
                             </div>
                         </form>
                     </div>
@@ -484,7 +509,9 @@ $('#addTaskForm').on('submit', function(e) {
         $.ajax({
             url: '<?php echo base_url() ?>user/home/add_task/'+<?php echo $userId?>,
             type: 'post',
-            data: form.serialize(),
+            data: new FormData(this),
+            processData:false,
+            contentType:false,
 
             success: function() {
                 $("#btnAddTask").attr("disabled", false);
@@ -512,10 +539,18 @@ $(document).on("click", ".btn_update", function() {
         success: function(data) {
             var parsedResponse = jQuery.parseJSON(JSON.stringify(data));
             var row = parsedResponse[0];
+            var filesdir = "<?php echo base_url()?>resources/files/"+row.taskFiles;
+
             $('[name="id"').val(row.id);
             $('[name="edittaskTitle"]').val(row.taskTitle);
             $('[name="edittaskCategory"]').val(row.taskCategory);
             $('[name="edittaskDescription"]').val(row.taskDescription);
+            $('#filesAttached').attr("href", filesdir);
+            $('#filesAttached').html(row.taskFiles);
+            if(row.taskFiles !== ""){
+                $('#filesAttachedButton').val(row.id);
+                $('#filesAttachedButton').html('Delete');
+            }
             $('[name="edittaskDueDate"]').val(row.taskDueDate);
             $('#editTaskModal').modal(
                 'show'); // show bootstrap modal when complete loaded
@@ -524,6 +559,41 @@ $(document).on("click", ".btn_update", function() {
 
 });
 // END OF PASS TASK
+
+// DELETE FILES ATTACHED 
+$(document).on("click", ".btn_delete_files", function(e) {
+    e.preventDefault()
+    var id = this.value;
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'error',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Ajax call
+            $.ajax({
+                url: '<?php echo base_url() ?>user/home/delete_files',
+                data: {
+                    id: id
+                },
+                success: function() {
+                    refresh()
+                    $('#filesAttached').html('');
+                    $('#filesAttachedButton').html('');
+                }
+            });
+            // End of ajax call
+        }
+    })
+
+});
+// END OF PASS TASK
+
 
 // VIEW TASK 
 $(document).on("click", ".btn_view", function() {
@@ -551,12 +621,11 @@ $(document).on("click", ".btn_view", function() {
 // END OF VIEW TASK
 
 // UPDATE TASK
-$('#editTaskForm').on('submit', function(e) {
+$('#btnUpdateTask').on('click', function(e) {
     e.preventDefault();
     $("#btnUpdateTask").attr("disabled", true);
 
     var id = document.editTaskForm.id.value
-
     var editTaskTitle = document.editTaskForm.edittaskTitle.value;
     var editTaskCategory = document.editTaskForm.edittaskCategory.value;
     var editTaskDescription = document.editTaskForm.edittaskDescription.value;
@@ -575,7 +644,7 @@ $('#editTaskForm').on('submit', function(e) {
         $("#btnUpdateTask").attr("disabled", false);
     }
     else{
-        var form = ($(this).serialize());
+        let form = document.getElementById('editTaskForm');
 
         Swal.fire({
             title: 'Are you sure?',
@@ -590,8 +659,10 @@ $('#editTaskForm').on('submit', function(e) {
                 // Ajax call
                 $.ajax({
                     url: '<?php echo base_url() ?>user/home/update_task/'+<?php echo $userId ?>,
-                    type: 'post',
-                    data: form,
+                    type: 'post', 
+                    data: new FormData(form),
+                    processData:false,
+                    contentType:false,
 
                     success: function() {
                         $("#btnUpdateTask").attr("disabled", false);

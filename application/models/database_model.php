@@ -39,6 +39,14 @@ class Database_model extends CI_Model
         $this->db->update($tableName);
     }
 
+    // DISABLE
+    function delete_files($id, $statusColumn, $tableName)
+    {
+        $this->db->set($statusColumn, '');
+        $this->db->where("id", $id);
+        $this->db->update($tableName);
+    }
+
 
     // GET SPECIFIC COLUMN
     function get($id, $tableName)
@@ -119,6 +127,7 @@ class Database_model extends CI_Model
 		, DATE_FORMAT(taskDueDate,'%b %d, %Y %l:%i %p') AS `taskDueDateFormatted`
         , taskStatus
         , taskCategory
+        , taskFiles
         , CASE 
         WHEN taskStatus = '2' THEN '4'
         WHEN DATEDIFF(taskDueDate, NOW()) <= 0 THEN '1' 

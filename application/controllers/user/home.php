@@ -27,25 +27,57 @@ class Home extends CI_Controller
 
 	public function add_task($userId)
 	{
+		// loading model that needed
 		$this->load->model('database_model');
 
 		$taskTitle = $this->input->post('taskTitle');
 		$taskCategory = $this->input->post('taskCategory');
 		$taskDescription = $this->input->post('taskDescription');
 		$taskDueDate = $this->input->post('taskDueDate');
+		$taskFiles = $this->input->post('taskFiles');
 
-		// making data of assoc array to pass to model
-		$data = array(
-			"taskTitle" => $taskTitle,
-			"taskCategory" => $taskCategory,
-			"taskDescription" => $taskDescription,
-			"taskDueDate" => $taskDueDate,
-			"taskUser" => $userId
-		);
+		if(($_FILES["taskFiles"]["name"]))
+		{
+			$config['upload_path'] = './resources/files';
+			$config['allowed_types'] = 'pdf|doc|docx|xl|xlsx|word|txt|xml';
+			
+			$this->load->library('upload', $config);
+			
+			if(!$this->upload->do_upload('taskFiles'))
+			{
+				echo $this->upload->display_errors();
+			}
+			else
+			{
+				$data = $this->upload->data();
+				$insert_data = array(
+					'taskUser' => $userId,
+					'taskTitle' => $taskTitle,
+					'taskCategory' => $taskCategory,
+					'taskDescription' => $taskDescription,
+					'taskDueDate' => $taskDueDate,
+                    'taskFiles' => $data['file_name']
+                    // 'path' => $data['full_path']
+					 );
 
+				print_r($insert_data);
 
-		$this->database_model->create($data, "t_task");
+				$this->database_model->create($insert_data, "t_task");
+			}
+		}
+		else{
+			$insert_data = array(
+				'taskUser' => $userId,
+				'taskTitle' => $taskTitle,
+				'taskCategory' => $taskCategory,
+				'taskDescription' => $taskDescription,
+				'taskDueDate' => $taskDueDate
+				// 'path' => $data['full_path']
+				 );
+			$this->database_model->create($insert_data, "t_task");
+		}
 	}
+
 
 	public function view_task($userId)
 	{
@@ -76,6 +108,7 @@ class Home extends CI_Controller
 			"taskTitle" => $result[0]->taskTitle,
 			"taskCategory" => $result[0]->taskCategory,
 			"taskDescription" => $result[0]->taskDescription,
+			"taskFiles" => $result[0]->taskFiles,
 			"taskDueDate" => $taskDueDate->format($timeFormat)
 		);
 
@@ -96,16 +129,48 @@ class Home extends CI_Controller
 		$taskCategory = $this->input->post('edittaskCategory');
 		$taskDescription = $this->input->post('edittaskDescription');
 		$taskDueDate = $this->input->post('edittaskDueDate');
+		$taskFiles = $this->input->post('edittaskFiles');
 
-		$insert_data = array(
-			'taskTitle' => $taskTitle,
-			'taskCategory' => $taskCategory,
-			'taskDescription' => $taskDescription,
-			'taskDueDate' => $taskDueDate,
-			'taskUser' => $userId
-		);
+		if(($_FILES["edittaskFiles"]["name"]))
+		{
+			$config['upload_path'] = './resources/files';
+			$config['allowed_types'] = 'pdf|doc|docx|xl|xlsx|word|txt|xml';
+			
+			$this->load->library('upload', $config);
+			
+			if(!$this->upload->do_upload('edittaskFiles'))
+			{
+				echo $this->upload->display_errors();
+			}
+			else
+			{
+				$data = $this->upload->data();
+				$insert_data = array(
+					'taskUser' => $userId,
+					'taskTitle' => $taskTitle,
+					'taskCategory' => $taskCategory,
+					'taskDescription' => $taskDescription,
+					'taskDueDate' => $taskDueDate,
+                    'taskFiles' => $data['file_name']
+                    // 'path' => $data['full_path']
+					 );
 
-		$this->database_model->update($id, $insert_data, "t_task");
+				print_r($insert_data);
+
+				$this->database_model->update($id, $insert_data, "t_task");
+			}
+		}
+		else{
+			$insert_data = array(
+				'taskUser' => $userId,
+				'taskTitle' => $taskTitle,
+				'taskCategory' => $taskCategory,
+				'taskDescription' => $taskDescription,
+				'taskDueDate' => $taskDueDate
+				// 'path' => $data['full_path']
+				 );
+			$this->database_model->update($id, $insert_data, "t_task");
+		}
 	}
 
 
@@ -116,6 +181,15 @@ class Home extends CI_Controller
 		$id = $this->input->get('id');
 
 		$this->database_model->delete($id, "taskStatus", "t_task");
+	}
+
+	public function delete_files()
+	{
+		$this->load->model('database_model');
+
+		$id = $this->input->get('id');
+
+		$this->database_model->delete_files($id, "taskFiles", "t_task");
 	}
 
 	public function complete_task()
@@ -135,4 +209,6 @@ class Home extends CI_Controller
 
 		$this->database_model->uncomplete_task($id, "taskStatus", "t_task");
 	}
+
+	
 }
