@@ -129,16 +129,35 @@ class Database_model extends CI_Model
         , taskCategory
         , taskFiles
         , CASE 
-        WHEN taskStatus = '2' THEN '4'
         WHEN DATEDIFF(taskDueDate, NOW()) <= 0 THEN '1' 
         WHEN DATEDIFF(taskDueDate, NOW()) >= 1 AND DATEDIFF(taskDueDate, NOW()) <= 3 THEN '2'
         WHEN DATEDIFF(taskDueDate, NOW()) >= 4 AND DATEDIFF(taskDueDate, NOW()) <= 7 THEN '3'
         WHEN DATEDIFF(taskDueDate, NOW()) >= 8 THEN '3' 
         END AS `priority`
         FROM t_task
-        WHERE taskStatus != '0'
+        WHERE taskStatus = '1'
         AND taskUser = $userId
         ORDER BY priority, taskDueDate");
+
+        $data = $query->result();
+        return $data;
+    }
+
+    function view_complete_list($userId)
+    {
+        $query = $this->db->query("SELECT 
+        id
+        , taskTitle
+        , taskDescription
+        , taskDueDate
+		, DATE_FORMAT(taskDueDate,'%b %d, %Y %l:%i %p') AS `taskDueDateFormatted`
+        , taskStatus
+        , taskCategory
+        , taskFiles
+        FROM t_task
+        WHERE taskStatus = '2'
+        AND taskUser = $userId
+        ORDER BY taskDueDate");
 
         $data = $query->result();
         return $data;

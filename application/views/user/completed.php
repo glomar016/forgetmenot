@@ -38,11 +38,11 @@ else {
                     <div class="row">
                         <div id="signupIconMain" class="col-2 col-lg-1 text-center"
                             style="margin-top:auto; margin-bottom:auto; height:50%;">
-                            <i class="nav-icon fas fa-home" style="font-size:35px;"></i>
+                            <i class="nav-icon fas fa-completed" style="font-size:35px;"></i>
                         </div>
                         <div class="col-10 col-lg-11">
-                            <h1 id="signupTitle" class="m-0 text-dark text-bold">Home</h1>
-                            <span id="signupDesc">Welcome, manage all your tasks here!</span>
+                            <h1 id="signupTitle" class="m-0 text-dark text-bold">Completed</h1>
+                            <span id="signupDesc">All your completed task is here!</span>
                         </div>
 
                     </div>
@@ -56,11 +56,8 @@ else {
                             <!-- DATA TABLE -->
                             <div class="card-header">
                                 <h1 class="card-title mt-2 text-bold" style="font-size:1.5rem"><i
-                                        class="fas fa-clipboard-list mr-1"></i> TASK
+                                        class="fas fa-clipboard-list mr-1"></i> COMPLETED TASK
                                     LIST</h1>
-                                <button type="button" class="btn btn-lg btn-success float-right" data-toggle="modal"
-                                    data-target="#addTaskModal">
-                                    <i class="fa fa-plus mr-2"></i> <b>ADD NEW TASK</b> </button>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive p-0">
@@ -349,7 +346,7 @@ function loadtable() {
                 },
         
         ajax: {
-            url: "<?php echo base_url() ?>user/home/view_task/"+<?php echo $userId ?>,
+            url: "<?php echo base_url() ?>user/completed/view_task/"+<?php echo $userId ?>,
             dataSrc: function(data) {
                 
 
@@ -467,7 +464,7 @@ function loadtable() {
 
 
 function refresh() {
-    var url = "<?php echo base_url()?>user/home/view_task/"+<?php echo $userId ?>;
+    var url = "<?php echo base_url()?>user/completed/view_task/"+<?php echo $userId ?>;
 
     receivedTable.ajax.url(url).load();
 }
@@ -507,7 +504,7 @@ $('#addTaskForm').on('submit', function(e) {
         var form = $('#addTaskForm');
         // ajax post
         $.ajax({
-            url: '<?php echo base_url() ?>user/home/add_task/'+<?php echo $userId?>,
+            url: '<?php echo base_url() ?>user/completed/add_task/'+<?php echo $userId?>,
             type: 'post',
             data: new FormData(this),
             processData:false,
@@ -532,7 +529,7 @@ $(document).on("click", ".btn_update", function() {
     var id = this.value;
 
     $.ajax({
-        url: '<?php echo base_url() ?>user/home/get_task/' + id,
+        url: '<?php echo base_url() ?>user/completed/get_task/' + id,
         type: "GET",
         dataType: "JSON",
 
@@ -577,7 +574,7 @@ $(document).on("click", ".btn_delete_files", function(e) {
         if (result.isConfirmed) {
             // Ajax call
             $.ajax({
-                url: '<?php echo base_url() ?>user/home/delete_files',
+                url: '<?php echo base_url() ?>user/completed/delete_files',
                 data: {
                     id: id
                 },
@@ -600,7 +597,7 @@ $(document).on("click", ".btn_view", function() {
     var id = this.value;
 
     $.ajax({
-        url: '<?php echo base_url() ?>user/home/get_task/' + id,
+        url: '<?php echo base_url() ?>user/completed/get_task/' + id,
         type: "GET",
         dataType: "JSON",
 
@@ -658,7 +655,7 @@ $('#btnUpdateTask').on('click', function(e) {
             if (result.isConfirmed) {
                 // Ajax call
                 $.ajax({
-                    url: '<?php echo base_url() ?>user/home/update_task/'+<?php echo $userId ?>,
+                    url: '<?php echo base_url() ?>user/completed/update_task/'+<?php echo $userId ?>,
                     type: 'post', 
                     data: new FormData(form),
                     processData:false,
@@ -698,7 +695,7 @@ $(document).on("click", ".btn_delete", function() {
         if (result.isConfirmed) {
             // Ajax call
             $.ajax({
-                url: '<?php echo base_url() ?>user/home/delete_task',
+                url: '<?php echo base_url() ?>user/completed/delete_task',
                 data: {
                     id: id
                 },
@@ -718,7 +715,7 @@ $(document).on("change", ".taskComplete", function() {
 
     // Ajax call
     $.ajax({
-        url: '<?php echo base_url() ?>user/home/complete_task',
+        url: '<?php echo base_url() ?>user/completed/complete_task',
         data: {
             id: id
         },
@@ -736,7 +733,7 @@ $(document).on("change", ".taskUncomplete", function() {
 
     // Ajax call
     $.ajax({
-        url: '<?php echo base_url() ?>user/home/uncomplete_task',
+        url: '<?php echo base_url() ?>user/completed/uncomplete_task',
         data: {
             id: id
         },

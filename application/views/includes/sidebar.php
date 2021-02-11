@@ -31,15 +31,15 @@
                         </p>
                     </a>
                 </li>
-                <!-- <li class="nav-item">
-                    <a href="<?php echo base_url() ?>user/education" style="color:black" class="nav-link">
-                        <i class="nav-icon fas fa-graduation-cap"></i>
+                <li class="nav-item">
+                    <a href="<?php echo base_url() ?>user/completed" style="color:black" class="nav-link">
+                        <i class="nav-icon fas fa-briefcase"></i>
                         <p>
-                            Education
+                            Archive
                         </p>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="<?php echo base_url() ?>user/personal" style="color:black" class="nav-link">
                         <i class="nav-icon fas fa-user"></i>
                         <p>
