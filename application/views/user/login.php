@@ -70,38 +70,40 @@ $('#loginForm').on('submit', function(e){
     e.preventDefault();
     $("#btn_login").val("Logging in...").attr("disabled", true);
 
-    var userName = $('#userName').val();
+    var userEmail = $('#userEmail').val();
     var userPassword = $('#userPassword').val();
 
-    var form = $('#loginForm');                                
-    // ajax post
-    $.ajax({
-        url: '<?php echo base_url()?>user/login/submit',
-        type: 'post',
-        data: form.serialize(),
+    if (userEmail == "" || userPassword == ""){
+      $("#btn_login").notify("Fill out required fields!");
+      $("#btn_login").val("Submit").attr("disabled", false);
+      $('#loginForm')[0].reset();
+    }
+    else{
+      var form = $('#loginForm');                                
+        // ajax post
+        $.ajax({
+            url: '<?php echo base_url()?>user/login/submit',
+            type: 'post',
+            data: form.serialize(),
 
-            success: function(data){
-                    var data = jQuery.parseJSON(data)
-                    if(data.result == 'Error'){
-                        Swal.fire({
-                        title: 'Failed!',
-                        text: 'Invalid Student Number and Password.',
-                        icon: 'error',
-                        confirmButtonText: 'Ok'
-                        }).then((result) => {
-                                $("#btn_login").val("Submit").attr("disabled", false);
-                                $('#loginForm')[0].reset();
-                        })
-                        // End of Swal
+                success: function(data){
+                        var data = jQuery.parseJSON(data)
+                        if(data.result == 'Error'){
+                                    $("#btn_login").notify("Incorrect Password or Email!", { position:"right" });
+                                    $("#btn_login").val("Submit").attr("disabled", false);
+                                    $('#loginForm')[0].reset();
+                        }
+                        else if(data.result == 'Success'){
+                            window.location.href = "<?php echo base_url()?>user/home";
+                        }
+                    
                     }
-                    else if(data.result == 'Success'){
-                        window.location.href = "<?php echo base_url()?>user/home";
-                    }
-                
-                }
-            // End of success function
-    })
-    // End of ajax post
+                // End of success function
+        })
+        // End of ajax post
+    }
+
+    
 })
 
 

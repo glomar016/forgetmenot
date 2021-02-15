@@ -162,4 +162,23 @@ class Database_model extends CI_Model
         $data = $query->result();
         return $data;
     }
+
+    function get_completed_task($userId){
+        $this->db->select("COUNT(*) AS completed");
+        $this->db->from('t_task');
+        $this->db->where("taskUser", $userId);
+        $this->db->where("taskStatus", '2');
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+    function get_active_task($userId){
+        $this->db->select("COUNT(*) AS active");
+        $this->db->from('t_task');
+        $this->db->where("taskUser", $userId);
+        $this->db->where("taskStatus", '1');
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
 }

@@ -84,30 +84,21 @@ $('#registerForm').on('submit', function(e){
     var userPassword = $('#userPassword').val();
     var userPassword2 = $('#userPassword2').val();
 
-    if (userPassword != userPassword2){
-        Swal.fire({
-            title: 'Failed!',
-            text: 'Password does not match!',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-            }).then((result) => {
-                    $("#btn_register").val("Submit").attr("disabled", false);
-                    $('#registerForm')[0].reset();
-            })
+    
+    if (userName == "" || userEmail == "" || userPassword == "" || userPassword2 == ""){
+            $("#btn_register").notify("Fill out required fields!");
             $("#btn_register").val("Submit").attr("disabled", false);
             $('#registerForm')[0].reset();
     }
 
-    if (userPassword.length < 8){
-        Swal.fire({
-            title: 'Failed!',
-            text: 'Password at least 8 characters!',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-            }).then((result) => {
-                    $("#btn_register").val("Register").attr("disabled", false);
-                    $('#registerForm')[0].reset();
-            })
+    else if (userPassword != userPassword2){
+            $("#btn_register").notify("Password does not match!");
+            $("#btn_register").val("Submit").attr("disabled", false);
+            $('#registerForm')[0].reset();
+    }
+    
+    else if (userPassword.length < 8){
+                    $("#btn_register").notify("Password at least 8 characters!");
                     $("#btn_register").val("Register").attr("disabled", false);
                     $('#registerForm')[0].reset();
     }
@@ -123,30 +114,13 @@ $('#registerForm').on('submit', function(e){
 
                     success: function(data){
                         if(data == true){
-                            Swal.fire({
-                                title: 'Failed!',
-                                text: 'Email already registered!',
-                                icon: 'error',
-                                confirmButtonText: 'Ok'
-                                }).then((result) => {
-                                        $("#btn_register").val("Register").attr("disabled", false);
-                                        $('#registerForm')[0].reset();
-                                })
+                                        $("#btn_register").notify("Email already registered!");
                                         $("#btn_register").val("Register").attr("disabled", false);
                                         $('#registerForm')[0].reset();
 
                         }
                         else{
-                            Swal.fire({
-                                title: 'Success!',
-                                text: 'Successfully Registered!',
-                                icon: 'sucess',
-                                confirmButtonText: 'Ok'
-                                }).then((result) => {
-                                        $("#btn_register").val("Register").attr("disabled", false);
-                                        $('#registerForm')[0].reset();
-                                        window.location.href = "<?php echo base_url()?>user/login";
-                                })
+                                    $("#btn_register").notify("Successfully registered!", "success");
                                     $("#btn_register").val("Register").attr("disabled", false);
                                     $('#registerForm')[0].reset();
                         }

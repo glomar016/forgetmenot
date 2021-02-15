@@ -210,5 +210,18 @@ class Home extends CI_Controller
 		$this->database_model->uncomplete_task($id, "taskStatus", "t_task");
 	}
 
+	public function get_dataset($userId)
+	{
+		$this->load->model('database_model');
+
+		$completed = $this->database_model->get_completed_task($userId);
+
+		$active = $this->database_model->get_active_task($userId);
+
+		$data['completed'] = $completed[0]->completed;
+		$data['active'] = $active[0]->active;
+
+		echo json_encode($data);
+	}
 	
 }

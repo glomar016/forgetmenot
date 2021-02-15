@@ -17,6 +17,7 @@ else {
 <?php $this->load->view('includes/header.php'); ?>
 
 
+
 <body class="hold-transition sidebar-mini sidebar-collapse">
     <div class="wrapper">
 
@@ -27,8 +28,6 @@ else {
         <!-- MENU SIDEBAR-->
         <?php $this->load->view('includes/sidebar.php'); ?>
         <!-- END MENU SIDEBAR-->
-
-
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -78,6 +77,10 @@ else {
                         <!-- END DATA TABLE -->
                     </div>
                 </div>
+                <div id="chart">
+                    
+                </div>
+                
         </div>
         </section>
         <!-- /.content -->
@@ -199,7 +202,7 @@ else {
                                         placeholder="Description" class="form-control" maxlength="2000"></textarea>
                                 </div>
                             </div>
-                            <div class="row form-group">
+                            <!-- <div class="row form-group">
                                 <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-comment"></i>
                                     <label for="taskFiles" class=" form-control-label">File Attached</label>
@@ -209,7 +212,7 @@ else {
                                     <input type="file" id="taskFiles" name="taskFiles" placeholder="Files"
                                         class="form-control">
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="row form-group">
                                 <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-calendar"></i>
@@ -282,7 +285,7 @@ else {
                                         placeholder="Description" class="form-control" maxlength="2000"></textarea>
                                 </div>
                             </div>
-                            <div class="row form-group">
+                            <!-- <div class="row form-group">
                                 <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-comment"></i>
                                     <label for="editaskFiles" class=" form-control-label">File Attached</label>
@@ -295,7 +298,7 @@ else {
                                     <button id="filesAttachedButton" style="padding:5px" class="btn btn-sm bg-transparent btn_delete_files"></button>
                                 </div>
                                 
-                            </div>
+                            </div> -->
                             <div class="row form-group">
                                 <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-calendar"></i>
@@ -323,8 +326,10 @@ else {
 </body>
 
 <?php $this->load->view('includes/script.php'); ?>
+<?php $this->load->view('includes/chart.php'); ?>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script type="text/javascript">
+
 function loadtable() {
 
     receivedTable = $("#taskTable").DataTable({
@@ -518,6 +523,7 @@ $('#addTaskForm').on('submit', function(e) {
                 $('#addTaskModal').modal('hide');
                 $('#addTaskModal form')[0].reset();
                 refresh()
+                get_dataset()
             }
 
         });
@@ -583,6 +589,7 @@ $(document).on("click", ".btn_delete_files", function(e) {
                 },
                 success: function() {
                     refresh()
+                    get_dataset()
                     $('#filesAttached').html('');
                     $('#filesAttachedButton').html('');
                 }
@@ -669,6 +676,7 @@ $('#btnUpdateTask').on('click', function(e) {
                         $('#editTaskModal').modal('hide');
                         $('#editTaskModal form')[0].reset();
                         refresh();
+                        get_dataset()
                     }
                 });
                 // End of ajax call
@@ -704,6 +712,7 @@ $(document).on("click", ".btn_delete", function() {
                 },
                 success: function() {
                     refresh()
+                    get_dataset()
                 }
             });
             // End of ajax call
@@ -724,6 +733,7 @@ $(document).on("change", ".taskComplete", function() {
         },
         success: function() {
             refresh()
+            get_dataset()
         }
     });
     // End of ajax call  
@@ -742,11 +752,41 @@ $(document).on("change", ".taskUncomplete", function() {
         },
         success: function() {
             refresh()
+            get_dataset()
         }
     });
     // End of ajax call  
 });
 // END OF COMPLETE TASK
+
+
+// GET DATASET
+function get_dataset(){
+    $('#chart').html('')
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/get_dataset/'+<?php echo $userId ?>,
+        type: "GET", 
+        datatype: "JSON", 
+        success: function(data) {
+            var data = jQuery.parseJSON(data)
+            var completedCount = data.completed
+            var activeCount = data.active
+            var allCount = data.all
+
+            dataset = []
+            dataset.push(completedCount)
+            dataset.push(activeCount)
+
+            if(dataset.length == 2){
+                show_chart()
+            }
+        }
+    });
+}
+
+
+
+// GET DATASET
 </script>
 
 </html>

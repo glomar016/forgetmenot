@@ -1,0 +1,43 @@
+CREATE TABLE t_user(
+id int(11) NOT NULL AUTO_INCREMENT
+, userName VARCHAR(255)
+, userEmail VARCHAR(255)
+, userPassword VARCHAR(255)
+, userDateCreated DATETIME DEFAULT NOW()
+	, CONSTRAINT PK_user PRIMARY KEY (id)
+);
+
+CREATE TABLE t_task(
+id int(11) NOT NULL AUTO_INCREMENT
+, taskTitle VARCHAR(255)
+, taskDescription VARCHAR(2000)
+, taskDueDate DATETIME
+, taskCategory VARCHAR(255)
+, taskStatus int(11) DEFAULT 1
+, taskUser int(11) 
+, taskDateCreated DATETIME DEFAULT NOW()
+    , CONSTRAINT PK_task PRIMARY KEY(id)
+    , CONSTRAINT FK_user_task FOREIGN KEY(taskUser) REFERENCES t_user(id)
+);
+
+CREATE TABLE t_subtask(
+id int(11) NOT NULL AUTO_INCREMENT
+, subtaskTitle VARCHAR(255)
+, subtaskDescription VARCHAR(2000)
+, subtaskStatus int(11)
+, subtaskTask int(11)
+, subtaskDateCreated DATETIME DEFAULT NOW()
+    , CONSTRAINT PK_subtask PRIMARY KEY(id)
+    , CONSTRAINT FK_task_subtask FOREIGN KEY(subtaskTask) REFERENCES t_task(id)
+);
+
+CREATE TABLE t_files(
+id int(11) NOT NULL AUTO_INCREMENT
+, fileName VARCHAR(1000)
+, fileDateCreated DATETIME DEFAULT NOW()
+, fileStatus int(11)
+, fileTask int(11)
+    , CONSTRAINT PK_files PRIMARY KEY(id)
+	, CONSTRAINT FK_file_task FOREIGN KEY(fileTask) REFERENCES t_task(id)
+    );
+    
