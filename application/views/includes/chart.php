@@ -12,7 +12,7 @@
 <script>
 var dataset = []
 function show_chart(){
-    $('#chart').html('<canvas id="myChart" width="1000" height="200"></canvas>')
+    $('#chart').html('<canvas id="myChart" width="500" height="100"></canvas>')
     console.log(dataset)
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {

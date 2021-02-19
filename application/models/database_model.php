@@ -143,6 +143,26 @@ class Database_model extends CI_Model
         return $data;
     }
 
+    function view_upcoming_task($userId)
+    {
+        $query = $this->db->query("SELECT 
+        id
+        , taskTitle
+        , taskDueDate
+		, DATE_FORMAT(taskDueDate,'%b %d, %Y %l:%i %p') AS `taskDueDateFormatted`
+        , taskStatus
+        , taskCategory
+        FROM t_task
+        WHERE taskStatus = '1'
+        AND `taskDueDate` BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 7 DAY)
+        AND taskUser = $userId
+        ORDER BY taskDueDate");
+
+        $data = $query->result();
+        return $data;
+
+    }
+
     function view_complete_list($userId)
     {
         $query = $this->db->query("SELECT 

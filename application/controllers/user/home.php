@@ -224,4 +224,17 @@ class Home extends CI_Controller
 		echo json_encode($data);
 	}
 	
+	public function view_upcoming_task($userId)
+	{
+		// loading model that needed
+		$this->load->helper('date');
+		$this->load->model('database_model');
+
+		// $dateToday = mdate("%Y-%m-%d %h:%i:%s");
+
+		$data = $this->database_model->view_upcoming_task($userId);
+
+		header('Content-Type: application/json');
+		echo json_encode($data);
+	}
 }

@@ -32,20 +32,37 @@ else {
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-            <div class="content-header">
+            <div style="padding-left:50%" class="content-header">
                 <div class="container mt-5">
-                    <div class="row">
-                        <div id="signupIconMain" class="col-2 col-lg-1 text-center"
-                            style="margin-top:auto; margin-bottom:auto; height:50%;">
+                    <div  class="d-flex justify-content-end">
+                        <div id="signupIconMain" class="col-2 col-lg-1 text-center">
                             <i class="nav-icon fas fa-home" style="font-size:35px;"></i>
                         </div>
-                        <div class="col-10 col-lg-11">
+                        <div class="col-12">
                             <h1 id="signupTitle" class="m-0 text-dark text-bold">Home</h1>
                             <span id="signupDesc">Welcome, manage all your tasks here!</span>
                         </div>
-
+                        <div id="chart">
+                        
+                        </div>
                     </div>
                 </div>
+            </div>
+            <div class="card" style="margin-left:5%; margin-right:5%; margin-top:1%">
+              <div class="card-header">
+                <h3 class="card-title">Upcoming Task (This Week)</h3>
+                <div class="card-tools">
+                  <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                    <i class="fas fa-minus"></i>
+                  </button>
+                  <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+              </div>
+              <div id="upcomingTask" class="card-body">
+                
+              </div>
             </div>
             <!-- Main content -->
             <section class="content mt-5">
@@ -77,9 +94,7 @@ else {
                         <!-- END DATA TABLE -->
                     </div>
                 </div>
-                <div id="chart">
-                    
-                </div>
+                
                 
         </div>
         </section>
@@ -398,17 +413,17 @@ function loadtable() {
                                     `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Due Today - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             } else if(task_due__hours > 0){
                                 task_status =
-                                    `<small class="ml-2 badge bg-gradient-yellow d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Almost Due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
+                                    `<small class="ml-2 badge bg-gradient-orange d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>Almost Due - ${moment(data[i]['taskDueDate']).diff(moment(), 'hours')} hour/s left</small>`;
                             }
                         } else if (task_due__date >= 1 && task_due__date <= 3) {
                             // OVER DUE
                             task_status =
-                                `<small class="ml-2 badge bg-gradient-red d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>${moment().countdown(data[i]['taskDueDate'], countdown.DAYS | countdown.HOURS).toString()} left</small>`;
+                                `<small class="ml-2 badge bg-gradient-yellow d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>${moment().countdown(data[i]['taskDueDate'], countdown.DAYS | countdown.HOURS).toString()} left</small>`;
 
                         } else if (task_due__date >= 4 && task_due__date <= 7) {
                             // MODERATE
                             task_status =
-                                `<small class="ml-2 badge bg-gradient-orange d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>${moment().countdown(data[i]['taskDueDate'], countdown.DAYS | countdown.HOURS).toString()} left</small>`;
+                                `<small class="ml-2 badge bg-gradient-blue d-inline" style="font-size:13px"><i class="far fa-clock mr-1"></i>${moment().countdown(data[i]['taskDueDate'], countdown.DAYS | countdown.HOURS).toString()} left</small>`;
                         } else if (task_due__date >= 8) {
                             // MODERATE
                             task_status =
@@ -524,6 +539,7 @@ $('#addTaskForm').on('submit', function(e) {
                 $('#addTaskModal form')[0].reset();
                 refresh()
                 get_dataset()
+                get_upcoming_task();
             }
 
         });
@@ -590,6 +606,7 @@ $(document).on("click", ".btn_delete_files", function(e) {
                 success: function() {
                     refresh()
                     get_dataset()
+                    get_upcoming_task();
                     $('#filesAttached').html('');
                     $('#filesAttachedButton').html('');
                 }
@@ -677,6 +694,7 @@ $('#btnUpdateTask').on('click', function(e) {
                         $('#editTaskModal form')[0].reset();
                         refresh();
                         get_dataset()
+                        get_upcoming_task();
                     }
                 });
                 // End of ajax call
@@ -713,6 +731,7 @@ $(document).on("click", ".btn_delete", function() {
                 success: function() {
                     refresh()
                     get_dataset()
+                    get_upcoming_task();
                 }
             });
             // End of ajax call
@@ -734,6 +753,7 @@ $(document).on("change", ".taskComplete", function() {
         success: function() {
             refresh()
             get_dataset()
+            get_upcoming_task();
         }
     });
     // End of ajax call  
@@ -753,6 +773,7 @@ $(document).on("change", ".taskUncomplete", function() {
         success: function() {
             refresh()
             get_dataset()
+            get_upcoming_task();
         }
     });
     // End of ajax call  
@@ -771,7 +792,6 @@ function get_dataset(){
             var data = jQuery.parseJSON(data)
             var completedCount = data.completed
             var activeCount = data.active
-            var allCount = data.all
 
             dataset = []
             dataset.push(completedCount)
@@ -780,13 +800,43 @@ function get_dataset(){
             if(dataset.length == 2){
                 show_chart()
             }
+
         }
     });
 }
 
+get_dataset()
+// END OF GET DATASET FUNCTION
 
+// UPCOMING TASKS
+function get_upcoming_task(){
+    $('#upcomingTask').html('')
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/view_upcoming_task/'+<?php echo $userId ?>,
+        type: "GET",
+        datatype: "JSON",
+        success: function(data){
+            var parsedResponse = jQuery.parseJSON(JSON.stringify(data));
+            for(i=0; i<parsedResponse.length; i++){
+                
+                var html = `
+                <small style="font-size:16px;">Title: ${parsedResponse[i].taskTitle} |</small>
+                <small style="color: red; font-size:14px;">Due Date: ${parsedResponse[i].taskDueDateFormatted} |</small>
+                <small style="color: blue; font-size:14px;"> Category: ${parsedResponse[i].taskCategory}</small></p>
+                `
+                
+                $('#upcomingTask').append(html)
+            }
 
-// GET DATASET
+        }
+    })
+
+};
+
+get_upcoming_task();
+
+// END OF UPCOMING TASK
+
 </script>
 
 </html>

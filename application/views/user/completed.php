@@ -33,18 +33,19 @@ else {
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-            <div class="content-header">
+            <div style="padding-left:50%" class="content-header">
                 <div class="container mt-5">
-                    <div class="row">
-                        <div id="signupIconMain" class="col-2 col-lg-1 text-center"
-                            style="margin-top:auto; margin-bottom:auto; height:50%;">
-                            <i class="nav-icon fas fa-completed" style="font-size:35px;"></i>
+                    <div  class="d-flex justify-content-end">
+                        <div id="signupIconMain" class="col-2 col-lg-1 text-center">
+                            <i class="nav-icon fas fa-clipboard-check" style="font-size:35px;"></i>
                         </div>
                         <div class="col-10 col-lg-11">
                             <h1 id="signupTitle" class="m-0 text-dark text-bold">Completed</h1>
                             <span id="signupDesc">All your completed task is here!</span>
                         </div>
-
+                        <div id="chart" class="pull-right">
+                        
+                        </div>
                     </div>
                 </div>
             </div>
@@ -320,6 +321,7 @@ else {
 </body>
 
 <?php $this->load->view('includes/script.php'); ?>
+<?php $this->load->view('includes/chart.php'); ?>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script type="text/javascript">
 function loadtable() {
@@ -744,6 +746,35 @@ $(document).on("change", ".taskUncomplete", function() {
     // End of ajax call  
 });
 // END OF COMPLETE TASK
+
+
+
+// GET DATASET
+function get_dataset(){
+    $('#chart').html('')
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/get_dataset/'+<?php echo $userId ?>,
+        type: "GET", 
+        datatype: "JSON", 
+        success: function(data) {
+            var data = jQuery.parseJSON(data)
+            var completedCount = data.completed
+            var activeCount = data.active
+
+            dataset = []
+            dataset.push(completedCount)
+            dataset.push(activeCount)
+
+            if(dataset.length == 2){
+                show_chart()
+            }
+
+        }
+    });
+}
+
+get_dataset()
+
 </script>
 
 </html>
