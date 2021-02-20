@@ -314,6 +314,20 @@ else {
                                 </div>
                                 
                             </div> -->
+
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <i style=padding-right:16px; class="fa fa-calendar"></i>
+                                    <label for="editSubTask" class=" form-control-label">Sub Tasks</label>
+                                </div>
+                                <div class="col-4 col-md-8">
+                                    <button class="btn btn-sm btn_addSubTask btn-success">
+                                    ✚ Add Sub Task</button><br>
+                                    <div id="editSubTask">
+                                    
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row form-group">
                                 <div class="col col-md-3">
                                     <i style=padding-right:16px; class="fa fa-calendar"></i>
@@ -335,7 +349,40 @@ else {
     </div>
 
 
-
+<!-- ADD SUB Task MODAL -->
+<div class="modal fade" id="addSubTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style=background-color:#28a745;>
+                    <h4 class="modal-title" id="largeModalLabel" style=color:white;><strong>Add Sub Task</strong></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="card-body card-block">
+                        <form action="" method="post" name="addSubTaskForm" id="addSubTaskForm">
+                            <div class="row form-group">
+                                <div class="col col-md-3">
+                                    <i style=padding-right:16px; class="fa fa-create"></i>
+                                    <label for="addSubTaskName" class=" form-control-label">Sub Task Name</label>
+                                </div>
+                                <div class="col-4 col-md-8">
+                                    <input type="text" id="subtaskParentId" name="subtaskParentId" hidden>
+                                    <input type="text" id="addSubTaskName" name="addSubTaskName" placeholder="Name"
+                                        maxlength="50" class="form-control">
+                                </div>
+                            </div>
+                            <div style=float:right;>
+                                <input type="submit" id="btnAddSubTask" value="Add" class="btn btn-sm btn-success">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </body>
@@ -450,7 +497,7 @@ function loadtable() {
                              <button class="btn btn_update text-left" style="padding:0;" title="Edit Task"
                              value="${data[i]['id']}">${data[i]['taskTitle']} ${task_status}<br>
                              <small style="color: #acacac; font-size:14px;">${data[i]['taskDueDateFormatted']} - ${taskCategory}</small>
-                             <p class="mb-0" style="white-space: pre-wrap;">${data[i]['taskDescription']}</p></button>
+                             <p class="mb-0" style="white-space: pre-wrap;">${data[i]['taskDescription']}</p></button><br>
                           </div>
                        </div>
                     </div>
@@ -552,7 +599,6 @@ $('#addTaskForm').on('submit', function(e) {
 // PASS TASK 
 $(document).on("click", ".btn_update", function() {
     var id = this.value;
-
     $.ajax({
         url: '<?php echo base_url() ?>user/home/get_task/' + id,
         type: "GET",
@@ -564,6 +610,7 @@ $(document).on("click", ".btn_update", function() {
             var filesdir = "<?php echo base_url()?>resources/files/"+row.taskFiles;
 
             $('[name="id"').val(row.id);
+            $('[id="subtaskParentId"').val(row.id);
             $('[name="edittaskTitle"]').val(row.taskTitle);
             $('[name="edittaskCategory"]').val(row.taskCategory);
             $('[name="edittaskDescription"]').val(row.taskDescription);
@@ -574,8 +621,34 @@ $(document).on("click", ".btn_update", function() {
                 $('#filesAttachedButton').html('Delete');
             }
             $('[name="edittaskDueDate"]').val(row.taskDueDate);
-            $('#editTaskModal').modal(
-                'show'); // show bootstrap modal when complete loaded
+        }
+    })
+
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/get_subtask/' + id,
+        type: "GET",
+        dataType: "JSON",
+
+        success: function(data) {
+            var parsedResponse = jQuery.parseJSON(JSON.stringify(data));
+            if(parsedResponse.length == 0){
+                $("#editSubTask").html("")
+            }
+            console.log(parsedResponse)
+            var html = `<div>Sub Tasks: </div>`;
+            for(i=0; i<parsedResponse.length; i++){
+                if(parsedResponse[i]['subtaskStatus'] != '2'){
+                    html += `<div class=""><input class="subtaskComplete" value="${parsedResponse[i]['id']}"
+                    type="checkbox"> <small style="font-size:17px">${parsedResponse[i]['subtaskTitle']}</small></div>`
+                }
+                else{
+                    html += `<div class=""><input checked class="subtaskUncomplete" value="${parsedResponse[i]['id']}"
+                    type="checkbox"> <small  style="font-size:17px">${parsedResponse[i]['subtaskTitle']}</small></div>`
+                }
+                $("#editSubTask").html(html)
+            }
+
+            $('#editTaskModal').modal('show'); // show bootstrap modal when complete loaded
         }
     })
 
@@ -820,8 +893,8 @@ function get_upcoming_task(){
             for(i=0; i<parsedResponse.length; i++){
                 
                 var html = `
-                <small style="font-size:16px;">Title: ${parsedResponse[i].taskTitle} |</small>
-                <small style="color: red; font-size:14px;">Due Date: ${parsedResponse[i].taskDueDateFormatted} |</small>
+                <small style="font-size:14px;">Title: ${parsedResponse[i].taskTitle} |</small>
+                <small style="color: gray; font-size:14px;">Due Date: ${parsedResponse[i].taskDueDateFormatted} |</small>
                 <small style="color: blue; font-size:14px;"> Category: ${parsedResponse[i].taskCategory}</small></p>
                 `
                 
@@ -834,8 +907,75 @@ function get_upcoming_task(){
 };
 
 get_upcoming_task();
-
 // END OF UPCOMING TASK
+
+$(".btn_addSubTask").on("click", function(e){
+    e.preventDefault();
+
+    $('#addSubTaskModal').modal('show');
+
+})
+
+
+// ADDING SUBTASK
+$("#addSubTaskModal").on("submit", function(e){
+    e.preventDefault();
+    var id = $("#id").val();
+    var subTaskName = $("#addSubTaskName").val();
+    var form = $('#addSubTaskModal'); 
+
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/add_sub_task',
+        type: "POST",
+        data: {subTaskName: subTaskName, id: id},
+
+        success: function(data){
+            var subTask = `<div class=""><input type="checkbox"> ${subTaskName}</div>`
+            $("#editSubTask").append(subTask)
+            $("#addSubTaskModal").modal('hide')
+            $('#addSubTaskModal form')[0].reset();
+        }
+    })
+})
+// END OF ADDING SUBTASK
+
+
+// COMPLETE SUBTASK
+$(document).on("change", ".subtaskComplete", function() {
+    var id = this.value;
+
+    // Ajax call
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/complete_subtask',
+        data: {
+            id: id
+        },
+        success: function() {
+            
+        }
+    });
+    // End of ajax call  
+});
+// END OF COMPLETE SUBTASK
+
+// UNCOMPLETE SUBTASK
+$(document).on("change", ".subtaskUncomplete", function() {
+    var id = this.value;
+    console.log(id)
+
+    // Ajax call
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/uncomplete_subtask',
+        data: {
+            id: id
+        },
+        success: function() {
+            
+        }
+    });
+    // End of ajax call  
+});
+// END OF COMPLETE SUBTASK
 
 </script>
 

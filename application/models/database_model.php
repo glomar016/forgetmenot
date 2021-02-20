@@ -61,6 +61,16 @@ class Database_model extends CI_Model
 
     // -- END OF CRUD --
 
+    function get_subtask($id, $tableName)
+    {
+        $this->db->select("*");
+        $this->db->from($tableName);
+        $this->db->where("subtaskTask", $id);
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+
     // COMPLETE TASK
     function complete_task($id, $statusColumn, $tableName)
     {
@@ -200,5 +210,21 @@ class Database_model extends CI_Model
         $query = $this->db->get();
         $data = $query->result();
         return $data;
+    }
+
+    // COMPLETE SUBTASK
+    function complete_subtask($id, $statusColumn, $tableName)
+    {
+        $this->db->set($statusColumn, '2');
+        $this->db->where("id", $id);
+        $this->db->update($tableName);
+    }
+
+    // UNCOMPLETE SUBTASK
+    function uncomplete_subtask($id, $statusColumn, $tableName)
+    {
+        $this->db->set($statusColumn, '1');
+        $this->db->where("id", $id);
+        $this->db->update($tableName);
     }
 }

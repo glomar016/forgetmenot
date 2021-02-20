@@ -118,6 +118,17 @@ class Home extends CI_Controller
 		echo json_encode($data);
 	}
 
+	public function get_subtask($id)
+	{
+		$this->load->model('database_model');
+
+		$result = $this->database_model->get_subtask($id, 't_subtask');
+		// print_r($result);
+
+
+		echo json_encode($result);
+	}
+
 	public function update_task($userId)
 	{
 		// loading model that needed
@@ -236,5 +247,41 @@ class Home extends CI_Controller
 
 		header('Content-Type: application/json');
 		echo json_encode($data);
+	}
+
+	public function add_sub_task()
+	{
+		// loading model that needed
+		$this->load->model('database_model');
+
+		$data = $this->input->post();
+		echo $data['subTaskName'];
+		
+		$insert_data = array(
+			'subtaskTitle' => $data['subTaskName'],
+			'subtaskTask' => $data['id']
+			 );
+
+		$this->database_model->create($insert_data, "t_subtask");
+
+	}
+
+	public function complete_subtask()
+	{
+		$this->load->model('database_model');
+
+		$id = $this->input->get('id');
+		echo $id;
+
+		$this->database_model->complete_subtask($id, "subtaskStatus", "t_subtask");
+	}
+
+	public function uncomplete_subtask()
+	{
+		$this->load->model('database_model');
+
+		$id = $this->input->get('id');
+
+		$this->database_model->uncomplete_subtask($id, "subtaskStatus", "t_subtask");
 	}
 }
