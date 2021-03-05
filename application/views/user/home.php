@@ -32,15 +32,29 @@ else {
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
 
-            <div style="padding-left:50%" class="content-header">
+            <div style="padding-left:70%" class="content-header">
                 <div class="container mt-5">
                     <div  class="d-flex justify-content-end">
-                        <div id="signupIconMain" class="col-2 col-lg-1 text-center">
+                        <div id="signupIconMain" class="col-2 col-lg-2 text-center">
                             <i class="nav-icon fas fa-home" style="font-size:35px;"></i>
                         </div>
                         <div class="col-12">
                             <h1 id="signupTitle" class="m-0 text-dark text-bold">Home</h1>
                             <span id="signupDesc">Welcome, manage all your tasks here!</span>
+                        </div>
+                        <div class="col-12">
+                            <div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false">
+                                <div class="toast-header" >
+                                    <!-- <img src="..." class="rounded mr-2" alt="..."> -->
+                                    <strong class="mr-auto">Daily Quotes</strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="toast-body" id="quotes" style="color:white">
+                                    
+                                </div>
+                            </div>
                         </div>
                         <div id="chart">
                         
@@ -64,6 +78,8 @@ else {
                 
               </div>
             </div>
+            
+            
             <!-- Main content -->
             <section class="content mt-5">
                 <div class="container-fluid">
@@ -74,9 +90,17 @@ else {
                                 <h1 class="card-title mt-2 text-bold" style="font-size:1.5rem"><i
                                         class="fas fa-clipboard-list mr-1"></i> TASK
                                     LIST</h1>
-                                <button type="button" class="btn btn-lg btn-success float-right" data-toggle="modal"
-                                    data-target="#addTaskModal">
-                                    <i class="fa fa-plus mr-2"></i> <b>ADD NEW TASK</b> </button>
+                                    <div>
+                                        <button type="button" class="btn btn-lg btn-success float-right" data-toggle="modal"
+                                            data-target="#addTaskModal">
+                                            <i class="fa fa-plus mr-2"></i> <b>ADD NEW TASK</b> 
+                                        </button>
+                                        <button type="button" class="btn btn-lg btn-primary float-right" data-toggle="modal" style="margin-right:10px"
+                                                            data-target="#productivityModal">
+                                                            <i class="fa fa-eye mr-2"></i> <b>VIEW PRODUCTIVITY</b>
+                                        </button>
+                                    </div>
+                                
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive p-0">
@@ -100,6 +124,35 @@ else {
         </section>
         <!-- /.content -->
     </div>
+
+    <!-- This week productivity modal -->
+    <div class="modal fade" id="productivityModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style=background-color:green;>
+                    <h4 class="modal-title" id="largeModalLabel" style=color:white;><strong>Productivity Chart</strong></h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="card">
+                    <div class="card-body card-block">
+                        <h4 style="text-align: center">Last Week</h4>
+                        <div id="productivity">
+                        
+                        </div>  
+                        <br><br><h4 style="text-align: center">This Year</h4>
+                        <div id="monthly_productivity">
+                        
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+    
 
     <!-- view Task MODAL -->
     <div class="modal fade" id="viewTaskModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel"
@@ -587,6 +640,8 @@ $('#addTaskForm').on('submit', function(e) {
                 refresh()
                 get_dataset()
                 get_upcoming_task();
+                get_this_week()
+                get_month()
             }
 
         });
@@ -682,6 +737,8 @@ $(document).on("click", ".btn_delete_files", function(e) {
                     get_upcoming_task();
                     $('#filesAttached').html('');
                     $('#filesAttachedButton').html('');
+                    get_this_week()
+                    get_month()
                 }
             });
             // End of ajax call
@@ -768,6 +825,8 @@ $('#btnUpdateTask').on('click', function(e) {
                         refresh();
                         get_dataset()
                         get_upcoming_task();
+                        get_this_week()
+                        get_month()
                     }
                 });
                 // End of ajax call
@@ -805,6 +864,8 @@ $(document).on("click", ".btn_delete", function() {
                     refresh()
                     get_dataset()
                     get_upcoming_task();
+                    get_this_week()
+                    get_month()
                 }
             });
             // End of ajax call
@@ -827,6 +888,8 @@ $(document).on("change", ".taskComplete", function() {
             refresh()
             get_dataset()
             get_upcoming_task();
+            get_this_week()
+            get_month()
         }
     });
     // End of ajax call  
@@ -847,6 +910,8 @@ $(document).on("change", ".taskUncomplete", function() {
             refresh()
             get_dataset()
             get_upcoming_task();
+            get_this_week()
+            get_month()
         }
     });
     // End of ajax call  
@@ -866,7 +931,6 @@ function get_dataset(){
             var completedCount = data.completed
             var activeCount = data.active
 
-            dataset = []
             dataset.push(completedCount)
             dataset.push(activeCount)
 
@@ -880,6 +944,7 @@ function get_dataset(){
 
 get_dataset()
 // END OF GET DATASET FUNCTION
+
 
 // UPCOMING TASKS
 function get_upcoming_task(){
@@ -977,6 +1042,102 @@ $(document).on("change", ".subtaskUncomplete", function() {
 });
 // END OF COMPLETE SUBTASK
 
+
+function randomNotif(){
+    var quotes = ['“Let our advance worrying become advance thinking and planning.” – Winston Churchill'
+                ,'“Have a good plan, Execute it violently, Do it today” – General Douglas McArthur'
+                ,'“Create with the heart; build with the mind.” ― Criss Jami'
+                ,'“To be disciplined is to follow in a good way. To be self-disciplined is to follow in a better way.” ― Corita Kent'
+                ,'“Make each day your masterpiece.”– John Wooden'
+                ,'“Never give up on a dream just because of the time it will take to accomplish it. The time will pass anyway.”– Earl Nightingale'
+                ,`“Go as far as you can see; when you get there, you'll be able to see further.”– Thomas Carlyle`
+                ,'“Action is the foundational key to all success.”– Picasso'
+                ,'“Your talent determines what you can do. Your motivation determines how much you are willing to do. Your attitude determines how well you do it.”– Lou Holtz'
+                ,'“The way to get started is to quit talking and begin doing.”– Walt Disney'
+                ,`“A dream doesn't become reality through magic; it takes sweat, determination, and hard work.”– Colin Powell`
+                ,`The price of success is hard work, dedication to the job at hand, and the determination that whether we win or lose, we have applied the best of ourselves to the task at hand. - Vince Lombardi `
+                ,`The secret of getting ahead is getting started. The secret of getting started is breaking your complex overwhelming tasks into small manageable tasks, and starting on the first one. - Mark Twain `
+                ,`Attempt easy tasks as if they were difficult, and difficult as if they were easy; in the one case that confidence may not fall asleep, in the other that it may not be dismayed. - Baltasar Gracian `
+                ,`Nothing great was ever achieved without enthusiasm. - Ralph Waldo Emerson `
+                ,`Always render more and better service than is expected of you, no matter what your task may be. - Og Mandino `
+                ,`Concentration is needed to complete the task. - Lailah Gifty Akita `
+                ,`None of the day is long enough to complete/achieve the work; we deliberately avoid undertaking or finishing. Start on time to accomplish on time. - Shahenshah Hafeez Khan `
+                ,`The more you discipline yourself to persist on a major task, the more you like and respect yourself, and the higher is your self-esteem. - Brian Tracy `
+                ,`Any task is difficult to do at the beginning, but its gets better with persistent labour. - Lailah Gifty Akita `
+                ,`We should focus our mind, body, heart, and soul on achieving happiness in accepting responsibilities and, of course, displaying enthusiasm in doing meaningful tasks. - Dr Prem Jagyasi `
+                ,`Put your heart and soul into whatever you do – but you won’t be able to do so until you have complete faith in whatever you are doing. - Dr Prem Jagyasi `
+                ,`If it is worthy doing, it worth doing so well. - Lailah Gifty Akita `
+                ,`Ensure you have done each day’s portion of the heavy responsibilities resting on you. Never delay your success! - Israelmore Ayivor `
+                ,`Leaders know how to set priorities. They focus on the task that requires the most rapid attention. - Israelmore Ayivor `
+                ,`Spread Smiles, it’s the prophetic task you are assigned! - Mahrukh `
+                ,`God knows you have the ability to accomplish the task that He is giving you - Sunday Adelaja `
+                ,`A task which seems difficult, can be done with adequate training. - Lailah Gifty Akita `
+
+                ]
+
+    var colors = ['#173F5F', '#20639B', '#3CAEA3', '#F6D55C', '#ED553B'
+                , '#FFB997', '#F67E7D', '#843B62', '#621940', '#0B632D']
+
+    var quotesNum = Math.floor(Math.random() * quotes.length);
+    var colorNum = Math.floor(Math.random() * colors.length)
+    $('.toast').css("background-color", colors[colorNum]);
+    $('#quotes').html(quotes[quotesNum])
+    $('.toast').toast('show')
+}
+
+
+randomNotif()
+
+function get_this_week(){
+    dataset = []
+    dailyset = []
+    dateset = []
+    dayset = []
+    monthset = []
+    var userId = '<?php echo $userId?>'
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/get_this_week/'+userId,
+        type: 'GET',
+        datatype: 'JSON',
+
+        success:function(data){
+            var parsedResponse = jQuery.parseJSON(data);
+            console.log(parsedResponse)
+            for(i=0 ; i<7; i++){
+                dailyset.push(parsedResponse['week'][i][0]['count'])
+                dayset.push(parsedResponse['week'][i][1])
+            }
+            console.log(dailyset)
+            console.log(dayset)
+
+            show_productivity();
+        }
+    })
+}
+
+get_this_week();
+
+function get_month(){
+    var userId = '<?php echo $userId?>'
+    $.ajax({
+        url: '<?php echo base_url() ?>user/home/get_month/'+userId,
+        type: 'GET',
+        datatype: 'JSON',
+        async: false,
+
+        success:function(data){
+            var data = jQuery.parseJSON(data);
+            console.log(data)
+              for(i=0; i<data.taskCount.length; i++){
+                monthset[data.taskCount[i].month -1] = (data.taskCount[i].count)
+              }
+              
+            show_month();
+        }
+    })
+}
+
+get_month();
 </script>
 
 </html>

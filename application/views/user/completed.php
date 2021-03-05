@@ -517,6 +517,7 @@ $('#addTaskForm').on('submit', function(e) {
                 $('#addTaskModal').modal('hide');
                 $('#addTaskModal form')[0].reset();
                 refresh()
+                get_dataset()
             }
 
         });
@@ -668,6 +669,7 @@ $('#btnUpdateTask').on('click', function(e) {
                         $('#editTaskModal').modal('hide');
                         $('#editTaskModal form')[0].reset();
                         refresh();
+                        get_dataset()
                     }
                 });
                 // End of ajax call
@@ -703,6 +705,7 @@ $(document).on("click", ".btn_delete", function() {
                 },
                 success: function() {
                     refresh()
+                    get_dataset()
                 }
             });
             // End of ajax call
@@ -723,6 +726,7 @@ $(document).on("change", ".taskComplete", function() {
         },
         success: function() {
             refresh()
+            get_dataset()
         }
     });
     // End of ajax call  
@@ -741,6 +745,7 @@ $(document).on("change", ".taskUncomplete", function() {
         },
         success: function() {
             refresh()
+            get_dataset()
         }
     });
     // End of ajax call  

@@ -66,15 +66,14 @@
 </div>
 <!-- /.register-box -->
 
-
-
-
 </body>
 
 <?php $this->load->view('includes/script.php'); ?>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 
 <script>
+
+
 $('#registerForm').on('submit', function(e){
     e.preventDefault();
     $("#btn_register").val("Creating account...").attr("disabled", true);

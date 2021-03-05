@@ -284,4 +284,35 @@ class Home extends CI_Controller
 
 		$this->database_model->uncomplete_subtask($id, "subtaskStatus", "t_subtask");
 	}
+
+	public function get_this_week($userId)
+	{
+		$this->load->model('database_model');
+
+		$currDate = date('Y-m-d');
+		$j = 0;
+
+		for($i = 6; $i >= 0; $i--){
+			$dateToGet = date("Y-m-d H:i:s", strtotime('-'.$i.'day', strtotime($currDate)));
+			$dayOfDate = date("D", strtotime($dateToGet));
+			$data['week'][$j] = $this->database_model->get_this_week($userId, $dateToGet);
+			array_push($data['week'][$j], $dayOfDate. ' - '.date('F j', strtotime($dateToGet)));
+			$j++;
+		}
+		// echo '<pre>';
+		// print_r($data['week']);
+		// echo '</pre>';
+
+		echo json_encode($data);
+	}
+
+	public function get_month($userId)
+	{
+		$this->load->model('database_model');
+
+		$data['taskCount'] = $this->database_model->get_month($userId);
+
+		echo json_encode($data);
+
+	}
 }

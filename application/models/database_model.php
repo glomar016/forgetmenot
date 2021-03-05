@@ -227,4 +227,39 @@ class Database_model extends CI_Model
         $this->db->where("id", $id);
         $this->db->update($tableName);
     }
+
+    function check_task_list(){
+        $this->db->select("*, t_task.id as taskId");
+        $this->db->from('t_task');
+        $this->db->join('t_user', 't_user.id = t_task.taskUser', 'left');
+        $this->db->where('taskDueDate >= CURDATE()');
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+
+    function get_this_week($userId, $dateRange){
+        $query = $this->db->query("SELECT COUNT(*) AS count FROM t_task
+        WHERE taskDueDate >= '$dateRange'
+        AND taskDueDate < DATE_ADD('$dateRange', INTERVAL 1 DAY)
+        AND taskUser = $userId
+        AND taskStatus != 1");
+
+        $data = $query->result();
+        return $data;
+    }
+
+    function get_month($userId){
+        $this->db->select("MONTH(taskDueDate) as month, COUNT(*) as count");
+        $this->db->from("t_task");
+        $this->db->where('YEAR(taskDueDate)', date("Y"));
+        $this->db->where('taskStatus != 1');
+        $this->db->where('taskUser', $userId);
+        $this->db->group_by('MONTH(taskDueDate)');
+        $query = $this->db->get();
+        $data = $query->result();
+        return $data;
+    }
+
+
 }
